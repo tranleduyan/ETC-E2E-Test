@@ -1,6 +1,8 @@
+const url = "http://localhost:3000/";
+
 describe("Sign In Page", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/");
+    cy.visit(url);
   });
 
   it("Visit", () => {
@@ -41,7 +43,7 @@ describe("Sign In Page", () => {
 
 describe("Dashboard Page", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/");
+    cy.visit(url);
   });
 
   it("Dashboard for Admin", () => {
@@ -140,7 +142,7 @@ describe("Dashboard Page", () => {
 
 describe("Navigation Bar", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/");
+    cy.visit(url);
   });
 
   it("Navigation Bar for Admin", () => {
@@ -206,7 +208,7 @@ describe("Navigation Bar", () => {
 
     /** Verify Sign Out Navigation */
     cy.get(".NavigationBarButton-SignOutButton").click();
-    cy.url().should("eq", "http://localhost:3000/");
+    cy.url().should("eq", url);
     //#endregion
   });
 
@@ -256,7 +258,7 @@ describe("Navigation Bar", () => {
 
     /** Verify Sign Out Navigation */
     cy.get(".NavigationBarButton-SignOutButton").click();
-    cy.url().should("eq", "http://localhost:3000/");
+    cy.url().should("eq", url);
     //#endregion
   });
 
@@ -306,7 +308,7 @@ describe("Navigation Bar", () => {
 
     /** Verify Sign Out Navigation */
     cy.get(".NavigationBarButton-SignOutButton").click();
-    cy.url().should("eq", "http://localhost:3000/");
+    cy.url().should("eq", url);
     //#endregion
   });
 });
