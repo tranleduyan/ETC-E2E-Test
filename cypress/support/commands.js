@@ -1,25 +1,30 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+/**
+ * Login Function
+ * Helper that tests and executes a login
+ */
+Cypress.Commands.add('login', (username, password) => {
+	cy.session(
+		username,
+		() => {
+		  cy.visit('/')
+
+		  /** Verify if the input field for school email */
+		  cy.get("input[name='emailAddress'").should("exist").type(username);
+
+		  /** Verify if "Continue" button */
+		  cy.contains("Continue").should("exist").click();
+	  
+		  /** Verify if the input field for password */
+		  cy.get("input[name='password'").should("exist").type(password);
+	  
+		  /** Verify if "Sign In" button exists */
+		  cy.contains("Sign In").should("exist").click();
+		},
+		{
+		  validate: () => {
+			/** Verify if user is navigated to Dashboard */
+			cy.url().should("include", "/Dashboard");
+		  },
+		}
+	)
+})

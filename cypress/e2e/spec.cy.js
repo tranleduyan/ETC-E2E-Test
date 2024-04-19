@@ -1,21 +1,38 @@
-const url = "http://localhost:3000/";
+const home = "/";
 
+/**
+ * Dev App Loaded and Running Test
+ * Makes sure the dev app is up and running before the tests are run.
+ */
+describe('Web App Successfully Loaded', () => {
+  it('Dev App Loaded Up', () => {
+    cy.visit(home)
+  })
+})
+
+/**
+ * Sign In Page Tests
+ * Tests if the first page that the user is shown is the sign-in page
+ * Then if all the inputs and buttons and other UI stuff works as expected
+ * Contains first success then error test cases
+ */
 describe("Sign In Page", () => {
   beforeEach(() => {
-    cy.visit(url);
+    cy.visit(home);
   });
 
-  it("Visit", () => {
+  it("This is the Sign In Page", () => {
     /** Verify if this is a Sign In page */
     cy.contains("Sign In").should("exist");
-  });
 
-  it("Can't Sign In?", () => {
+    /** Verify "Continue" button */
+    cy.contains("Continue").should("exist");
+
     /** Verify if "Can't Sign In" button exists */
     cy.contains("Can't Sign In?").should("exist");
   });
 
-  it("Create an account", () => {
+  it("Create an Account Works", () => {
     /** Verify if "Create an account" button exists */
     cy.contains("Create an account").should("exist").click();
 
@@ -23,9 +40,78 @@ describe("Sign In Page", () => {
     cy.url().should('include', '/SignUp');
   });
 
-  it("Sign In", () => {
+  it("Successful Sign In", () => {
+    cy.login("user_test@spu.edu", "test123");
+  })
+
+  it("Failed Sign In with Invalid Email (non-SPU)", () => {
+    /** Verify if the input field for school email */
+    cy.get("input[name='emailAddress'").should("exist").type("user_test@outlook.com");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if valid email address error message appears */
+    cy.contains("Please enter a valid school email address.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/");
+  })
+
+  it("Failed Sign In with Invalid Email (format)", () => {
+    /** Verify if the input field for school email */
+    cy.get("input[name='emailAddress'").should("exist").type("user_test@.com");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if valid email address error message appears */
+    cy.contains("Please enter a valid school email address.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/");
+  })
+
+  it("Failed Sign In with No Password", () => {
     /** Verify if the input field for school email */
     cy.get("input[name='emailAddress'").should("exist").type("user_test@spu.edu");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if "Sign In" button exists */
+    cy.contains("Sign In").should("exist").click();
+
+    /** Verify if no password error message appears */
+    cy.contains("Please enter your password.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/");
+  })
+
+  it("Failed Sign In with Invalid Password", () => {
+    /** Verify if the input field for school email */
+    cy.get("input[name='emailAddress'").should("exist").type("user_test@spu.edu");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if the input field for password */
+    cy.get("input[name='password'").should("exist").type("test321");
+
+    /** Verify if "Sign In" button exists */
+    cy.contains("Sign In").should("exist").click();
+
+    /** Verify if invalid credentials error message appears */
+    cy.contains("Invalid credentials.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/");
+  })
+
+  it("Failed Sign In with Unknown Email", () => {
+    /** Verify if the input field for school email */
+    cy.get("input[name='emailAddress'").should("exist").type("who_is_this@spu.edu");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -36,14 +122,17 @@ describe("Sign In Page", () => {
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
 
-    /** Verify if user is navigated to Dashboard */
-    cy.url().should("include", "/Dashboard");
+    /** Verify if invalid credentials error message appears */
+    cy.contains("Invalid credentials.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/");
   })
 });
 
 describe("Dashboard Page", () => {
   beforeEach(() => {
-    cy.visit(url);
+    cy.visit(home);
   });
 
   it("Dashboard for Admin", () => {
@@ -142,7 +231,7 @@ describe("Dashboard Page", () => {
 
 describe("Navigation Bar", () => {
   beforeEach(() => {
-    cy.visit(url);
+    cy.visit(home);
   });
 
   it("Navigation Bar for Admin", () => {
@@ -208,7 +297,7 @@ describe("Navigation Bar", () => {
 
     /** Verify Sign Out Navigation */
     cy.get(".NavigationBarButton-SignOutButton").click();
-    cy.url().should("eq", url);
+    cy.url().should("eq", 'http://localhost:3000/');
     //#endregion
   });
 
@@ -258,7 +347,7 @@ describe("Navigation Bar", () => {
 
     /** Verify Sign Out Navigation */
     cy.get(".NavigationBarButton-SignOutButton").click();
-    cy.url().should("eq", url);
+    cy.url().should("eq", 'http://localhost:3000/');
     //#endregion
   });
 
@@ -308,7 +397,7 @@ describe("Navigation Bar", () => {
 
     /** Verify Sign Out Navigation */
     cy.get(".NavigationBarButton-SignOutButton").click();
-    cy.url().should("eq", url);
+    cy.url().should("eq", 'http://localhost:3000/');
     //#endregion
   });
 });
