@@ -23,7 +23,7 @@ describe("Sign In Page", () => {
 
   it("This is the Sign In Page", () => {
     /** Verify if this is a Sign In page */
-    cy.contains("Sign In").should("exist");
+    cy.contains("Sign in to continue").should("exist");
 
     /** Verify "Continue" button */
     cy.contains("Continue").should("exist");
@@ -67,6 +67,17 @@ describe("Sign In Page", () => {
 
     /** Verify if valid email address error message appears */
     cy.contains("Please enter a valid school email address.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/");
+  })
+
+  it("Failed Sign In with No Email", () => {
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if no email error message appears */
+    cy.contains("Please enter your school email address.").should("exist");
 
     /** Verify if user stays on the current page */
     cy.url().should("include", "/");
@@ -129,6 +140,107 @@ describe("Sign In Page", () => {
     cy.url().should("include", "/");
   })
 });
+
+/**
+ * Sign Up Page Tests
+ * Tests successful navigation to Sign-Up page
+ * Then if all the inputs and buttons and other UI stuff works as expected
+ * Contains first success then error test cases
+ * (Omits Email Verification functionality)
+ */
+describe("Sign Up Page", () => {
+  beforeEach(() => {
+    cy.visit(home);
+    cy.contains("Create an account").click();
+  });
+
+  it("This is the Sign Up Page", () => {
+    /** Verify if this is a Sign Up page */
+    cy.contains("Sign up to continue").should("exist");
+
+    /** Verify "Continue" button */
+    cy.contains("Continue").should("exist");
+
+    /** Verify if "Already have an account? Sign In" button exists */
+    cy.contains("Already have an account? Sign In").should("exist");
+  })
+
+  it("Sign In button Works", () => {
+    /** Verify if "Create an account" button exists */
+    cy.contains("Already have an account? Sign In").should("exist").click();
+
+    /** Verify if the user is navigated to Sign In page */
+    cy.url().should('include', home);
+  });
+
+  it("Successful Sign Up", () => {
+    cy.task("log", "Pending");
+  })
+
+  it("Failed Sign Up with Invalid Email (non-SPU)", () => {
+    /** Verify if the input field for school email */
+    cy.get("input[name='emailAddress'").should("exist").type("wii@outlook.com");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if valid email address error message appears */
+    cy.contains("Please enter a valid school email address.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/SignUp");
+  })
+
+  it("Failed Sign Up with Invalid Email (format)", () => {
+    /** Verify if the input field for school email */
+    cy.get("input[name='emailAddress'").should("exist").type("wii@.com");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if valid email address error message appears */
+    cy.contains("Please enter a valid school email address.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/SignUp");
+  })
+
+  it("Failed Sign Up with No First Name", () => {
+    cy.task("log", "Pending");
+  })
+
+  it("Failed Sign Up with No Last Name", () => {
+    cy.task("log", "Pending");
+  })
+
+  it("Failed Sign Up with Invalid School ID (non-SPU)", () => {
+    cy.task("log", "Pending");
+  })
+
+  it("Failed Sign Up with Invalid School ID (format/type)", () => {
+    cy.task("log", "Pending");
+  })
+
+  it("Failed Sign Up with No School ID", () => {
+    cy.task("log", "Pending");
+  })
+
+  it("Failed Sign Up with No Password", () => {
+    cy.task("log", "Pending");
+  })
+
+  it("Failed Sign Up with Invalid Password (format)", () => {
+    cy.task("log", "Pending");
+  })
+
+  it("Failed Sign Up with Mismatching Passwords", () => {
+    cy.task("log", "Pending");
+  })
+
+  it("Failed Sign Up with Existing Account", () => {
+    cy.task("log", "Pending");
+  })
+})
 
 describe("Dashboard Page", () => {
   beforeEach(() => {
