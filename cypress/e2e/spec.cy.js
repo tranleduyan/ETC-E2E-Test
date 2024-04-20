@@ -41,7 +41,20 @@ describe("Sign In Page", () => {
   });
 
   it("Successful Sign In", () => {
-    cy.login("user_test@spu.edu", "test123");
+    /** Verify if the input field for school email */
+    cy.get("input[name='emailAddress'").should("exist").type("user_test@spu.edu");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+  
+    /** Verify if the input field for password */
+    cy.get("input[name='password'").should("exist").type("test123");
+  
+    /** Verify if "Sign In" button exists */
+    cy.contains("Sign In").should("exist").click();
+
+    /** Verify if user is navigated to Dashboard */
+		cy.url().should("include", "/Dashboard");
   })
 
   it("Failed Sign In with Invalid Email (non-SPU)", () => {
@@ -174,7 +187,38 @@ describe("Sign Up Page", () => {
   });
 
   it("Successful Sign Up", () => {
-    cy.task("log", "Pending");
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp school ID into school ID input field */
+    cy.get("input[name='schoolId'").should("exist").type("900736428");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp password into password input field */
+    cy.get("input[name='password'").should("exist").type("wakemeupwhenyougogo");
+
+    /** Verify and enter temp password into password confirm input field */
+    cy.get("input[name='confirmPassword'").should("exist").type("wakemeupwhenyougogo");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if user navigates to Verification page */
+    cy.url().should("include", "/Verification");
   })
 
   it("Failed Sign Up with Invalid Email (non-SPU)", () => {
@@ -206,39 +250,311 @@ describe("Sign Up Page", () => {
   })
 
   it("Failed Sign Up with No First Name", () => {
-    cy.task("log", "Pending");
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if first name error message appears */
+    cy.contains("Please enter your first name.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
   })
 
   it("Failed Sign Up with No Last Name", () => {
-    cy.task("log", "Pending");
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if last name error message appears */
+    cy.contains("Please enter your last name.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
   })
 
-  it("Failed Sign Up with Invalid School ID (non-SPU)", () => {
-    cy.task("log", "Pending");
+  it("Failed Sign Up with Invalid School ID (non-numerical)", () => {
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp school ID into school ID input field */
+    cy.get("input[name='schoolId'").should("exist").type("---+++aaa");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if school ID error message appears */
+    cy.contains("Please enter a valid school ID.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
   })
 
-  it("Failed Sign Up with Invalid School ID (format/type)", () => {
-    cy.task("log", "Pending");
+  it("Failed Sign Up with Invalid School ID (format)", () => {
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp school ID into school ID input field */
+    cy.get("input[name='schoolId'").should("exist").type("900111222333444");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if school ID error message appears */
+    cy.contains("Please enter a valid school ID.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
   })
 
   it("Failed Sign Up with No School ID", () => {
-    cy.task("log", "Pending");
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if school ID error message appears */
+    cy.contains("Please enter your school ID.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
   })
 
   it("Failed Sign Up with No Password", () => {
-    cy.task("log", "Pending");
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp school ID into school ID input field */
+    cy.get("input[name='schoolId'").should("exist").type("900736428");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if missing password error message appears */
+    cy.contains("Please enter your password.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
   })
 
   it("Failed Sign Up with Invalid Password (format)", () => {
-    cy.task("log", "Pending");
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp school ID into school ID input field */
+    cy.get("input[name='schoolId'").should("exist").type("900736428");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp password into password input field */
+    cy.get("input[name='password'").should("exist").type("wake");
+
+    /** Verify and enter temp password into password confirm input field */
+    cy.get("input[name='confirmPassword'").should("exist").type("wake");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if wrong length password error message appears */
+    cy.contains("Password must be 6 or more characters long.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
   })
 
   it("Failed Sign Up with Mismatching Passwords", () => {
-    cy.task("log", "Pending");
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp school ID into school ID input field */
+    cy.get("input[name='schoolId'").should("exist").type("900736428");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp password into password input field */
+    cy.get("input[name='password'").should("exist").type("wakemeupwhenyougogo");
+
+    /** Verify and enter temp password into password confirm input field */
+    cy.get("input[name='confirmPassword'").should("exist").type("gogowhenyouwakemeup");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if not matching password error message appears */
+    cy.contains("Passwords do not match.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
   })
 
-  it("Failed Sign Up with Existing Account", () => {
-    cy.task("log", "Pending");
+  it("Failed Sign Up with Existing Account (email)", () => {
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("user_test@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp school ID into school ID input field */
+    cy.get("input[name='schoolId'").should("exist").type("900736428");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp password into password input field */
+    cy.get("input[name='password'").should("exist").type("wakemeupwhenyougogo");
+
+    /** Verify and enter temp password into password confirm input field */
+    cy.get("input[name='confirmPassword'").should("exist").type("wakemeupwhenyougogo");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if existing email error message appears */
+    cy.contains("Email address is already used.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
+  })
+
+  it("Failed Sign Up with Existing Account (school ID)", () => {
+    /** Verify and enter temp SPU email into school email input field */
+    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp first name into first name input field */
+    cy.get("input[name='firstName'").should("exist").type("first");
+
+    /** Verify and enter temp last name into last name input field */
+    cy.get("input[name='lastName'").should("exist").type("last");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp school ID into school ID input field */
+    cy.get("input[name='schoolId'").should("exist").type("900712662");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify and enter temp password into password input field */
+    cy.get("input[name='password'").should("exist").type("wakemeupwhenyougogo");
+
+    /** Verify and enter temp password into password confirm input field */
+    cy.get("input[name='confirmPassword'").should("exist").type("wakemeupwhenyougogo");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if existing email error message appears */
+    cy.contains("School ID is already used.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
   })
 })
 
