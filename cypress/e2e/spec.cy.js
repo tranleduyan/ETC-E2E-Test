@@ -15,6 +15,8 @@ describe('Web App Successfully Loaded', () => {
  * Tests if the first page that the user is shown is the sign-in page
  * Then if all the inputs and buttons and other UI stuff works as expected
  * Contains first success then error test cases
+ * Success: sign in with user_test@spu.edu and test123
+ * Fail: invalid email, password, and unknown email
  */
 describe("Sign In Page", () => {
   beforeEach(() => {
@@ -57,7 +59,18 @@ describe("Sign In Page", () => {
 		cy.url().should("include", "/Dashboard");
   })
 
-  it("Failed Sign In with Invalid Email (non-SPU)", () => {
+  it("Failed Sign In with Invalid Email", () => {
+    /** ----------- Missing ----------- */
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if no email error message appears */
+    cy.contains("Please enter your school email address.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/");
+
+    /** ----------- Not SPU email ----------- */
     /** Verify if the input field for school email */
     cy.get("input[name='emailAddress'").should("exist").type("user_test@outlook.com");
 
@@ -69,9 +82,8 @@ describe("Sign In Page", () => {
 
     /** Verify if user stays on the current page */
     cy.url().should("include", "/");
-  })
 
-  it("Failed Sign In with Invalid Email (format)", () => {
+    /** ----------- Invalid Format ----------- */
     /** Verify if the input field for school email */
     cy.get("input[name='emailAddress'").should("exist").type("user_test@.com");
 
@@ -85,24 +97,14 @@ describe("Sign In Page", () => {
     cy.url().should("include", "/");
   })
 
-  it("Failed Sign In with No Email", () => {
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
-    /** Verify if no email error message appears */
-    cy.contains("Please enter your school email address.").should("exist");
-
-    /** Verify if user stays on the current page */
-    cy.url().should("include", "/");
-  })
-
-  it("Failed Sign In with No Password", () => {
+  it("Failed Sign In with Invalid Password", () => {
     /** Verify if the input field for school email */
     cy.get("input[name='emailAddress'").should("exist").type("user_test@spu.edu");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
+    /** ----------- Missing ----------- */
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
 
@@ -111,15 +113,8 @@ describe("Sign In Page", () => {
 
     /** Verify if user stays on the current page */
     cy.url().should("include", "/");
-  })
 
-  it("Failed Sign In with Invalid Password", () => {
-    /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type("user_test@spu.edu");
-
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
+    /** ----------- Incorrect ----------- */
     /** Verify if the input field for password */
     cy.get("input[name='password'").should("exist").type("test321");
 
@@ -159,7 +154,9 @@ describe("Sign In Page", () => {
  * Tests successful navigation to Sign-Up page
  * Then if all the inputs and buttons and other UI stuff works as expected
  * Contains first success then error test cases
- * (Omits Email Verification functionality)
+ * (Ignores middle name and email verification)
+ * Success: sign up with temp@spu.edu, first, last, 900736428, and wakemeupwhenyougogo
+ * Fail: invalid email, school ID, and password; missing names; and existing account (email and school ID)
  */
 describe("Sign Up Page", () => {
   beforeEach(() => {
@@ -221,7 +218,18 @@ describe("Sign Up Page", () => {
     cy.url().should("include", "/Verification");
   })
 
-  it("Failed Sign Up with Invalid Email (non-SPU)", () => {
+  it("Failed Sign Up with Invalid Email", () => {
+    /** ----------- Missing ----------- */
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if no email error message appears */
+    cy.contains("Please enter your school email address.").should("exist");
+
+    /** Verify if user stays on the current page */
+    cy.url().should("include", "/SignUp");
+
+    /** ----------- Not SPU email ----------- */
     /** Verify if the input field for school email */
     cy.get("input[name='emailAddress'").should("exist").type("wii@outlook.com");
 
@@ -233,9 +241,8 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on the current page */
     cy.url().should("include", "/SignUp");
-  })
 
-  it("Failed Sign Up with Invalid Email (format)", () => {
+    /** ----------- Invalid Format ----------- */
     /** Verify if the input field for school email */
     cy.get("input[name='emailAddress'").should("exist").type("wii@.com");
 
@@ -289,7 +296,7 @@ describe("Sign Up Page", () => {
     cy.url().should("include", "/SignUp");
   })
 
-  it("Failed Sign Up with Invalid School ID (non-numerical)", () => {
+  it("Failed Sign Up with Invalid School ID", () => {
     /** Verify and enter temp SPU email into school email input field */
     cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
     
@@ -305,8 +312,19 @@ describe("Sign Up Page", () => {
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
+    /** ----------- Missing ----------- */
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if school ID error message appears */
+    cy.contains("Please enter your school ID.").should("exist");
+
+    /** Verify if user stays on Sign Up page */
+    cy.url().should("include", "/SignUp");
+
+    /** ----------- Not Numeric ----------- */
     /** Verify and enter temp school ID into school ID input field */
-    cy.get("input[name='schoolId'").should("exist").type("---+++aaa");
+    cy.get("input[name='schoolId'").should("exist").type("---+++aaa000");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -316,24 +334,8 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on Sign Up page */
     cy.url().should("include", "/SignUp");
-  })
 
-  it("Failed Sign Up with Invalid School ID (format)", () => {
-    /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
-    
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
-    /** Verify and enter temp first name into first name input field */
-    cy.get("input[name='firstName'").should("exist").type("first");
-
-    /** Verify and enter temp last name into last name input field */
-    cy.get("input[name='lastName'").should("exist").type("last");
-
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
+    /** ----------- Invalid Format ----------- */
     /** Verify and enter temp school ID into school ID input field */
     cy.get("input[name='schoolId'").should("exist").type("900111222333444");
 
@@ -347,33 +349,7 @@ describe("Sign Up Page", () => {
     cy.url().should("include", "/SignUp");
   })
 
-  it("Failed Sign Up with No School ID", () => {
-    /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
-    
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
-    /** Verify and enter temp first name into first name input field */
-    cy.get("input[name='firstName'").should("exist").type("first");
-
-    /** Verify and enter temp last name into last name input field */
-    cy.get("input[name='lastName'").should("exist").type("last");
-
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
-    /** Verify if school ID error message appears */
-    cy.contains("Please enter your school ID.").should("exist");
-
-    /** Verify if user stays on Sign Up page */
-    cy.url().should("include", "/SignUp");
-  })
-
-  it("Failed Sign Up with No Password", () => {
+  it("Failed Sign Up with Invalid Password", () => {
     /** Verify and enter temp SPU email into school email input field */
     cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
     
@@ -395,6 +371,7 @@ describe("Sign Up Page", () => {
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
+    /** ----------- Missing ----------- */
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
@@ -403,30 +380,8 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on Sign Up page */
     cy.url().should("include", "/SignUp");
-  })
 
-  it("Failed Sign Up with Invalid Password (format)", () => {
-    /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
-    
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
-    /** Verify and enter temp first name into first name input field */
-    cy.get("input[name='firstName'").should("exist").type("first");
-
-    /** Verify and enter temp last name into last name input field */
-    cy.get("input[name='lastName'").should("exist").type("last");
-
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
-    /** Verify and enter temp school ID into school ID input field */
-    cy.get("input[name='schoolId'").should("exist").type("900736428");
-
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
+    /** ----------- Invalid Format ----------- */
     /** Verify and enter temp password into password input field */
     cy.get("input[name='password'").should("exist").type("wake");
 
@@ -441,30 +396,8 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on Sign Up page */
     cy.url().should("include", "/SignUp");
-  })
 
-  it("Failed Sign Up with Mismatching Passwords", () => {
-    /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
-    
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
-    /** Verify and enter temp first name into first name input field */
-    cy.get("input[name='firstName'").should("exist").type("first");
-
-    /** Verify and enter temp last name into last name input field */
-    cy.get("input[name='lastName'").should("exist").type("last");
-
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
-    /** Verify and enter temp school ID into school ID input field */
-    cy.get("input[name='schoolId'").should("exist").type("900736428");
-
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
-
+    /** ----------- Mismatching ----------- */
     /** Verify and enter temp password into password input field */
     cy.get("input[name='password'").should("exist").type("wakemeupwhenyougogo");
 
