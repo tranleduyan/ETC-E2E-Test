@@ -85,7 +85,7 @@ describe("Sign In Page", () => {
 
     /** ----------- Invalid Format ----------- */
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type("user_test@.com");
+    cy.get("input[name='emailAddress'").should("exist").clear().type("user_test@.com");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -244,7 +244,7 @@ describe("Sign Up Page", () => {
 
     /** ----------- Invalid Format ----------- */
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type("wii@.com");
+    cy.get("input[name='emailAddress'").should("exist").clear().type("wii@.com");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -337,7 +337,7 @@ describe("Sign Up Page", () => {
 
     /** ----------- Invalid Format ----------- */
     /** Verify and enter temp school ID into school ID input field */
-    cy.get("input[name='schoolId'").should("exist").type("900111222333444");
+    cy.get("input[name='schoolId'").should("exist").clear().type("900111222333444");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -399,10 +399,10 @@ describe("Sign Up Page", () => {
 
     /** ----------- Mismatching ----------- */
     /** Verify and enter temp password into password input field */
-    cy.get("input[name='password'").should("exist").type("wakemeupwhenyougogo");
+    cy.get("input[name='password'").should("exist").clear().type("wakemeupwhenyougogo");
 
     /** Verify and enter temp password into password confirm input field */
-    cy.get("input[name='confirmPassword'").should("exist").type("gogowhenyouwakemeup");
+    cy.get("input[name='confirmPassword'").should("exist").clear().type("gogowhenyouwakemeup");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -618,6 +618,33 @@ describe("Admin Reservation Page", () => {
 
     /** Verify if cancel button exists */
     cy.contains("Cancel").should("exist");
+
+    /** Verify if next button exists */
+    cy.get(".ReservationsPage-ContinueButton").should("exist");
+  });
+
+  it("Successful Reservation", () => {
+    /** Getting today's date in mm/dd/yyyy */
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+
+    let todayDate = mm + '/' + dd + '/' + yyyy;
+
+    /** Getting date a week later in mm/dd/yyyy */
+    const weekLater = new Date();
+    weekLater.setDate(today.getDate() + 7);
+    const ddNew = String(weekLater.getDate()).padStart(2, '0');
+    const mmNew = String(weekLater.getMonth() + 1).padStart(2, '0');
+    const yyyyNew = weekLater.getFullYear();
+
+    let newDate = mmNew + '/' + ddNew + '/' + yyyyNew;
+
+    cy.get("input[name='startDate'").eq(1).clear().type(todayDate);
+    cy.get("input[name='endDate'").eq(1).clear().type(newDate);
+
+    cy.contains("Reserve").click({force: true});
 
     /** Verify if next button exists */
     cy.get(".ReservationsPage-ContinueButton").should("exist");
