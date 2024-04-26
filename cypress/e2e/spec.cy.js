@@ -492,7 +492,7 @@ describe("Sign Up Page", () => {
   });
 });
 
-describe("Admin Dashboard & UI", () => {
+describe("Admin Main Dashboard & Nav Bar", () => {
   beforeEach(() => {
     cy.visit(home);
 
@@ -512,23 +512,25 @@ describe("Admin Dashboard & UI", () => {
     cy.url().should("include", "/Dashboard");
   });
 
-  it("Admin Main Dashboard Specifications", () => {
+  it("Dashboard UI Specifications", () => {
     /** Verify if the inventory list exists */
     cy.get(".AdminDashboard-InventorySection").should("exist");
 
-    /** Verify if the reservation section exists*/
+    /** Verify if the reservation section exists */
     cy.get(".AdminDashboard-ReservationSection").should("exist");
 
-    /** Verify if the "Add Equipment" button exists and functionality works*/
+    /** Verify if search bar exists */
+    cy.get(".AdminDashboard-SearchBar").should("exist");
+
+    /** Verify if reservation filters exist */
+    cy.get(".AdminDashboard-ReservationFilterContainer").should("exist");
+
+    /** Verify if the "Add Equipment" button exists and functionality works */
     cy.get(".AdminDashboard-AddEquipmentButton").should("exist").click();
     cy.url().should("include", "/AddToInventory");
   });
 
-  it("Admin Reservations Specifications", () => {
-
-  });
-
-  it("Navigation Bar for Admin", () => {
+  it("Navigation Bar", () => {
     //#region Verify if the admin-specific buttons exist and work correctly
     /** Verify Inventory Navigation */
     cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
@@ -575,7 +577,54 @@ describe("Admin Dashboard & UI", () => {
   });
 });
 
-describe("Faculty Dashboard & Functionalities", () => {
+describe("Admin Reservation Page", () => {
+  beforeEach(() => {
+    cy.visit(home);
+
+    /** Verify if the input field for school email */
+    cy.get("input[name='emailAddress'").should("exist").type("admin_test@spu.edu");
+
+    /** Verify if "Continue" button */
+    cy.contains("Continue").should("exist").click();
+
+    /** Verify if the input field for password */
+    cy.get("input[name='password'").should("exist").type("test123");
+
+    /** Verify if "Sign In" button exists */
+    cy.contains("Sign In").should("exist").click();
+
+    /** Verify if user is navigated to Dashboard */
+    cy.url().should("include", "/Dashboard");
+
+    /** Verify Reservations Navigation */
+    cy.get(".NavigationBarButton-ReservationsButton").as('resbtn').should("exist");
+    cy.get("@resbtn").click();
+    cy.url().should("include", "/Reservations");
+  });
+
+  it("Reservation Page UI", () => {
+    /** Verify if search bar exists */
+    cy.get(".ReservationsPage-SearchBar").should("exist");
+
+    /** Verify if date input fields exists */
+    cy.get("input[name='startDate'").should("exist");
+    cy.get("input[name='endDate'").should("exist");
+
+    /** Verify if your reservations button exists */
+    cy.get(".ReservationsPage-YourReservationsButton").should("exist");
+
+    /** Verify if Reserve button exists and click it */
+    cy.contains("Reserve").should("exist").click({force: true});
+
+    /** Verify if cancel button exists */
+    cy.contains("Cancel").should("exist");
+
+    /** Verify if next button exists */
+    cy.get(".ReservationsPage-ContinueButton").should("exist");
+  });
+});
+
+describe("Faculty Main Dashboard & Nav Bar", () => {
   beforeEach(() => {
     cy.visit(home);
 
@@ -635,7 +684,7 @@ describe("Faculty Dashboard & Functionalities", () => {
   });
 });
 
-describe("Student Dashboard & Functionalities", () => {
+describe("Student Dashboard & Nav Bar", () => {
   beforeEach(() => {
     cy.visit(home);
 
