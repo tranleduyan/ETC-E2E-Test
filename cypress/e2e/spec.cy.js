@@ -7,8 +7,8 @@ const home = "/";
 describe('Web App Successfully Loaded', () => {
   it('Dev App Loaded Up', () => {
     cy.visit(home)
-  })
-})
+  });
+});
 
 /**
  * Sign In Page Tests
@@ -57,7 +57,7 @@ describe("Sign In Page", () => {
 
     /** Verify if user is navigated to Dashboard */
 		cy.url().should("include", "/Dashboard");
-  })
+  });
 
   it("Failed Sign In with Invalid Email", () => {
     /** ----------- Missing ----------- */
@@ -95,7 +95,7 @@ describe("Sign In Page", () => {
 
     /** Verify if user stays on the current page */
     cy.url().should("include", "/");
-  })
+  });
 
   it("Failed Sign In with Invalid Password", () => {
     /** Verify if the input field for school email */
@@ -126,7 +126,7 @@ describe("Sign In Page", () => {
 
     /** Verify if user stays on the current page */
     cy.url().should("include", "/");
-  })
+  });
 
   it("Failed Sign In with Unknown Email", () => {
     /** Verify if the input field for school email */
@@ -146,7 +146,7 @@ describe("Sign In Page", () => {
 
     /** Verify if user stays on the current page */
     cy.url().should("include", "/");
-  })
+  });
 });
 
 /**
@@ -173,7 +173,7 @@ describe("Sign Up Page", () => {
 
     /** Verify if "Already have an account? Sign In" button exists */
     cy.contains("Already have an account? Sign In").should("exist");
-  })
+  });
 
   it("Sign In button Works", () => {
     /** Verify if "Create an account" button exists */
@@ -216,7 +216,7 @@ describe("Sign Up Page", () => {
 
     /** Verify if user navigates to Verification page */
     cy.url().should("include", "/Verification");
-  })
+  });
 
   it("Failed Sign Up with Invalid Email", () => {
     /** ----------- Missing ----------- */
@@ -254,7 +254,7 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on the current page */
     cy.url().should("include", "/SignUp");
-  })
+  });
 
   it("Failed Sign Up with No First Name", () => {
     /** Verify and enter temp SPU email into school email input field */
@@ -274,7 +274,7 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on Sign Up page */
     cy.url().should("include", "/SignUp");
-  })
+  });
 
   it("Failed Sign Up with No Last Name", () => {
     /** Verify and enter temp SPU email into school email input field */
@@ -294,7 +294,7 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on Sign Up page */
     cy.url().should("include", "/SignUp");
-  })
+  });
 
   it("Failed Sign Up with Invalid School ID", () => {
     /** Verify and enter temp SPU email into school email input field */
@@ -347,7 +347,7 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on Sign Up page */
     cy.url().should("include", "/SignUp");
-  })
+  });
 
   it("Failed Sign Up with Invalid Password", () => {
     /** Verify and enter temp SPU email into school email input field */
@@ -412,7 +412,7 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on Sign Up page */
     cy.url().should("include", "/SignUp");
-  })
+  });
 
   it("Failed Sign Up with Existing Account (email)", () => {
     /** Verify and enter temp SPU email into school email input field */
@@ -451,7 +451,7 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on Sign Up page */
     cy.url().should("include", "/SignUp");
-  })
+  });
 
   it("Failed Sign Up with Existing Account (school ID)", () => {
     /** Verify and enter temp SPU email into school email input field */
@@ -489,10 +489,10 @@ describe("Sign Up Page", () => {
 
     /** Verify if user stays on Sign Up page */
     cy.url().should("include", "/SignUp");
-  })
-})
+  });
+});
 
-describe("Admin Dashboard & Functionalities", () => {
+describe("Admin Dashboard & UI", () => {
   beforeEach(() => {
     cy.visit(home);
 
@@ -512,7 +512,7 @@ describe("Admin Dashboard & Functionalities", () => {
     cy.url().should("include", "/Dashboard");
   });
 
-  it("Admin Dashboard Specifications", () => {
+  it("Admin Main Dashboard Specifications", () => {
     /** Verify if the inventory list exists */
     cy.get(".AdminDashboard-InventorySection").should("exist");
 
@@ -522,6 +522,10 @@ describe("Admin Dashboard & Functionalities", () => {
     /** Verify if the "Add Equipment" button exists and functionality works*/
     cy.get(".AdminDashboard-AddEquipmentButton").should("exist").click();
     cy.url().should("include", "/AddToInventory");
+  });
+
+  it("Admin Reservations Specifications", () => {
+
   });
 
   it("Navigation Bar for Admin", () => {
@@ -629,7 +633,7 @@ describe("Faculty Dashboard & Functionalities", () => {
     cy.get("@signoutbtn").click();
     cy.url().should("eq", 'http://localhost:3000/');
   });
-})
+});
 
 describe("Student Dashboard & Functionalities", () => {
   beforeEach(() => {
