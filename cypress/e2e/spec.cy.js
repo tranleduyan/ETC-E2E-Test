@@ -1,4 +1,8 @@
 const home = "/";
+const admin_email = "admin_test@spu.edu";
+const faculty_email = "faculty_test@spu.edu";
+const student_email = "student_test@spu.edu";
+const password = "test123";
 
 /**
  * Dev App Loaded and Running Test
@@ -44,13 +48,13 @@ describe("Sign In Page", () => {
 
   it("Successful Sign In", () => {
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type("user_test@spu.edu");
+    cy.get("input[name='emailAddress'").should("exist").type(admin_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
   
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type("test123");
+    cy.get("input[name='password'").should("exist").type(password);
   
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -99,7 +103,7 @@ describe("Sign In Page", () => {
 
   it("Failed Sign In with Invalid Password", () => {
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type("user_test@spu.edu");
+    cy.get("input[name='emailAddress'").should("exist").type(admin_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -136,7 +140,7 @@ describe("Sign In Page", () => {
     cy.contains("Continue").should("exist").click();
 
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type("test123");
+    cy.get("input[name='password'").should("exist").type(password);
 
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -417,7 +421,7 @@ describe("Sign Up Page", () => {
   it("Failed Sign Up with Existing Account (email)", () => {
     /** Verify and enter temp SPU email into school email input field */
     cy.get("input[name='emailAddress'").as('emailbox').should("exist");
-    cy.get("@emailbox").type("user_test@spu.edu");
+    cy.get("@emailbox").type(student_email);
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -470,7 +474,7 @@ describe("Sign Up Page", () => {
     cy.contains("Continue").should("exist").click();
 
     /** Verify and enter temp school ID into school ID input field */
-    cy.get("input[name='schoolId'").should("exist").type("900712662");
+    cy.get("input[name='schoolId'").should("exist").type("800281127");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -497,13 +501,13 @@ describe("Admin Main Dashboard & Nav Bar", () => {
     cy.visit(home);
 
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type("admin_test@spu.edu");
+    cy.get("input[name='emailAddress'").should("exist").type(admin_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type("test123");
+    cy.get("input[name='password'").should("exist").type(password);
 
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -582,13 +586,13 @@ describe("Admin Reservation Page", () => {
     cy.visit(home);
 
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type("admin_test@spu.edu");
+    cy.get("input[name='emailAddress'").should("exist").type(admin_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type("test123");
+    cy.get("input[name='password'").should("exist").type(password);
 
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -616,11 +620,25 @@ describe("Admin Reservation Page", () => {
     /** Verify if Reserve button exists and click it */
     cy.contains("Reserve").should("exist").click({force: true});
 
+    /** Verify if checkbox(es) exist*/
+    cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").should("exist").click();
+
     /** Verify if cancel button exists */
     cy.contains("Cancel").should("exist");
 
     /** Verify if next button exists */
-    cy.get(".ReservationsPage-ContinueButton").should("exist");
+    cy.get(".ReservationsPage-ContinueButton").eq(0).should("exist").click();
+
+    /** Verify if switches to specify quantity */
+    cy.contains("Specify Quantity").should("exist");
+
+    /** Verify the back button */
+    cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").should("exist");
+
+    /** Verify the next button */
+    cy.get("button[class='ReservationsPage-ContinueButton StandardButton-Container']").should("exist");
+
+    /** Verify if  */
   });
 
   it("Successful Reservation", () => {
@@ -641,13 +659,19 @@ describe("Admin Reservation Page", () => {
 
     let newDate = mmNew + '/' + ddNew + '/' + yyyyNew;
 
+    /** Input the dates */
     cy.get("input[name='startDate'").eq(1).clear().type(todayDate);
     cy.get("input[name='endDate'").eq(1).clear().type(newDate);
 
+    /** Click Reserve button */
     cy.contains("Reserve").click({force: true});
+
+    /** Verify if checkbox(es) exist*/
+    cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").should("exist").click();
 
     /** Verify if next button exists */
     cy.get(".ReservationsPage-ContinueButton").should("exist");
+    
   });
 });
 
@@ -656,13 +680,13 @@ describe("Faculty Main Dashboard & Nav Bar", () => {
     cy.visit(home);
 
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type("faculty_test@spu.edu");
+    cy.get("input[name='emailAddress'").should("exist").type(faculty_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type("test123");
+    cy.get("input[name='password'").should("exist").type(password);
 
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -716,13 +740,13 @@ describe("Student Dashboard & Nav Bar", () => {
     cy.visit(home);
 
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type("student_test@spu.edu");
+    cy.get("input[name='emailAddress'").should("exist").type(student_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type("test123");
+    cy.get("input[name='password'").should("exist").type(password);
 
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
