@@ -607,6 +607,8 @@ describe("Admin Reservation Page", () => {
   });
 
   it("Reservation Page UI", () => {
+    /** Assuming 1st item in reservation inventory list has 3 or more items: */
+
     /** Verify if search bar exists */
     cy.get(".ReservationsPage-SearchBar").should("exist");
 
@@ -635,11 +637,19 @@ describe("Admin Reservation Page", () => {
     /** Verify the back button */
     cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").should("exist");
 
-    /** Verify if plus button exists (index to distinguish) */
-    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist");
+    /** Verify if plus button exists and click it 2 times (index to distinguish) */
+    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
 
-    /** Verify if minus button exists (index to distinguish) */
-    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(1).should("exist");
+    /** Verify if quantity is now 3 */
+    cy.contains("3").should("exist");
+
+    /** Verify if minus button exists and click it 2 times (index to distinguish) */
+    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(1).should("exist").click();
+    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(1).should("exist").click();
+
+    /** Verify if quantity is now 3 */
+    cy.contains("1").should("exist");
 
     /** Verify if equipment info card exists */
     cy.get(".SpecifyModelQuantityCard-Container").should("exist");
@@ -650,21 +660,35 @@ describe("Admin Reservation Page", () => {
     /** Verify if arrived at confirmation section */
     cy.contains("Confirm Reservation").should("exist");
 
-    /** Verify if reservation dates shown */
+    /** Getting today's date in mm/dd/yyyy */
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+
+    let todayDate = mm + '/' + dd + '/' + yyyy;
+
+    /** Verify if reservation dates shown (default) */
+    cy.contains(todayDate + " - " + todayDate).should("exist");
     cy.get(".ReservationsPage-ReservationConfirmationDateContainer").should("exist");
 
     /** Verify if confirmation reservation details list exists */
     cy.contains("Details").should("exist");
     cy.get(".ReservationConfirmationDetailsList-Container").should("exist");
 
+    /** Verify if correct quantity is shown */
+    cy.contains("Quantity: 1").should("exist");
+
     /** Verify the back button */
     cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").should("exist");
 
-    /** Verify and click the confirm button */
+    /** Verify the confirm button */
     cy.contains("Confirm").should("exist");
   });
 
   it("Successful Reservation", () => {
+    /** Assuming 1st item in reservation inventory list has 3 or more items: */
+
     /** Getting today's date in mm/dd/yyyy */
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -689,12 +713,41 @@ describe("Admin Reservation Page", () => {
     /** Click Reserve button */
     cy.contains("Reserve").click({force: true});
 
-    /** Verify if checkbox(es) exist*/
+    /** Click on the 1st checkbox*/
     cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").should("exist").click();
 
-    /** Verify if next button exists */
-    cy.get(".ReservationsPage-ContinueButton").should("exist");
+    /** Click on the next button */
+    cy.get(".ReservationsPage-ContinueButton").eq(0).should("exist").click();
     
+    /** Click on the plus button 2 times */
+    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+
+    /** Click the next button */
+    cy.get("button[class='ReservationsPage-ContinueButton StandardButton-Container']").eq(0).should("exist").click();
+
+    /** Click the confirm button */
+    cy.get("button[class='ReservationsPage-ConfirmButton StandardButton-Container']").eq(0).should("exist").click();
+
+    /** Go to the Dashboard */
+    cy.get(".NavigationBarButton-DashboardButton").as('dashbtn').should("exist");
+    cy.get("@dashbtn").click();
+
+    /** Reformatting dates */
+    const day = String(today.getDate());
+    const month = String(today.getMonth() + 1);
+    const dayNew = String(weekLater.getDate());
+    const monthNew = String(weekLater.getMonth() + 1);
+
+    todayDate = month + '/' + day + '/' + yyyy;
+    newDate = monthNew + '/' + dayNew + '/' + yyyyNew;
+
+    /** Confirm that the reservation has been successfully created and is shown */
+    cy.contains(todayDate).should("exist");
+    cy.contains(newDate).should("exist");
+    cy.contains("Test, Admin").should("exist");
+    cy.contains(":").should("exist");
+    cy.contains("3 items").should("exist");
   });
 });
 
