@@ -635,10 +635,33 @@ describe("Admin Reservation Page", () => {
     /** Verify the back button */
     cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").should("exist");
 
-    /** Verify the next button */
-    cy.get("button[class='ReservationsPage-ContinueButton StandardButton-Container']").should("exist");
+    /** Verify if plus button exists (index to distinguish) */
+    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist");
 
-    /** Verify if  */
+    /** Verify if minus button exists (index to distinguish) */
+    cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(1).should("exist");
+
+    /** Verify if equipment info card exists */
+    cy.get(".SpecifyModelQuantityCard-Container").should("exist");
+
+    /** Verify and click the next button */
+    cy.get("button[class='ReservationsPage-ContinueButton StandardButton-Container']").eq(0).should("exist").click();
+
+    /** Verify if arrived at confirmation section */
+    cy.contains("Confirm Reservation").should("exist");
+
+    /** Verify if reservation dates shown */
+    cy.get(".ReservationsPage-ReservationConfirmationDateContainer").should("exist");
+
+    /** Verify if confirmation reservation details list exists */
+    cy.contains("Details").should("exist");
+    cy.get(".ReservationConfirmationDetailsList-Container").should("exist");
+
+    /** Verify the back button */
+    cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").should("exist");
+
+    /** Verify and click the confirm button */
+    cy.contains("Confirm").should("exist");
   });
 
   it("Successful Reservation", () => {
