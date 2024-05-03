@@ -742,7 +742,7 @@ describe("Admin Reservation Page", () => {
     todayDate = month + '/' + day + '/' + yyyy;
     newDate = monthNew + '/' + dayNew + '/' + yyyyNew;
 
-    /** Confirm that the reservation has been successfully created and is shown */
+    /** Confirm that the reservation has been successfully created and is displayed */
     cy.contains(todayDate).should("exist");
     cy.contains(newDate).should("exist");
     cy.contains("Test, Admin").should("exist");
