@@ -225,7 +225,8 @@ describe("Sign Up Page", () => {
   it("Failed Sign Up with Invalid Email", () => {
     /** ----------- Missing ----------- */
     /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
+    cy.contains("Continue").as('conbtn').should("exist");
+    cy.get("@conbtn").click();
 
     /** Verify if no email error message appears */
     cy.contains("Please enter your school email address.").should("exist");
@@ -625,17 +626,11 @@ describe("Admin Reservation Page", () => {
     /** Verify if checkbox(es) exist*/
     cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").should("exist").click();
 
-    /** Verify if cancel button exists */
-    cy.contains("Cancel").should("exist");
-
     /** Verify if next button exists */
     cy.get(".ReservationsPage-ContinueButton").eq(0).should("exist").click();
 
     /** Verify if switches to specify quantity */
     cy.contains("Specify Quantity").should("exist");
-
-    /** Verify the back button */
-    cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").should("exist");
 
     /** Verify if plus button exists and click it 2 times (index to distinguish) */
     cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
@@ -679,11 +674,30 @@ describe("Admin Reservation Page", () => {
     /** Verify if correct quantity is shown */
     cy.contains("Quantity: 1").should("exist");
 
-    /** Verify the back button */
-    cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").should("exist");
-
     /** Verify the confirm button */
     cy.contains("Confirm").should("exist");
+
+    /** Now go back */
+    /** Verify the back button */
+    cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").eq(0).should("exist").click({force: true});
+
+    /** Verify if switches to specify quantity */
+    cy.contains("Specify Quantity").should("exist");
+
+    /** Verify the back button for this page */
+    cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").eq(0).should("exist").click({force: true});
+
+    /** Verify if cancel button exists and works */
+    cy.contains("Cancel").should("exist").click({force: true});
+    cy.contains("Reserve").should("exist");
+  });
+
+  it("Hidden Reservation List Page UI", () => {
+    /** Verify if your reservations button exists & click it */
+    cy.get(".ReservationsPage-YourReservationsButton").should("exist").click();
+
+    /** Check if reservation list exists */
+    cy.get(".ReservationList-Container ReservationsPage-ReservationList");
   });
 
   it("Successful Reservation", () => {
@@ -748,6 +762,11 @@ describe("Admin Reservation Page", () => {
     cy.contains("Test, Admin").should("exist");
     cy.contains(":").should("exist");
     cy.contains("3 items").should("exist");
+
+    /** Now cancel it lol */
+    cy.get("button[class=' ReservationCard-Container ']").eq(0).should("exist").click();
+    cy.contains("Cancel").should("be.visible").click();
+    cy.contains("There are no upcoming reservations.").should("exist");
   });
 });
 
