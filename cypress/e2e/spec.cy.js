@@ -1,8 +1,35 @@
+/** Constants ------------------------------------- */
 const home = "/";
 const admin_email = "admin_test@spu.edu";
 const faculty_email = "faculty_test@spu.edu";
 const student_email = "student_test@spu.edu";
 const password = "test123";
+
+/** Getting today's date in mm/dd/yyyy */
+const today = new Date();
+const dd = String(today.getDate()).padStart(2, '0');
+const mm = String(today.getMonth() + 1).padStart(2, '0');
+const yyyy = today.getFullYear();
+
+const todayDate = mm + '/' + dd + '/' + yyyy;
+
+/** Getting date a week later in mm/dd/yyyy */
+const weekLater = new Date();
+weekLater.setDate(today.getDate() + 7);
+const ddNew = String(weekLater.getDate()).padStart(2, '0');
+const mmNew = String(weekLater.getMonth() + 1).padStart(2, '0');
+const yyyyNew = weekLater.getFullYear();
+
+const newDate = mmNew + '/' + ddNew + '/' + yyyyNew;
+
+/** Reformatting the dates */
+const day = String(today.getDate());
+const month = String(today.getMonth() + 1);
+const dayNew = String(weekLater.getDate());
+const monthNew = String(weekLater.getMonth() + 1);
+
+const todayDateReformat = month + '/' + day + '/' + yyyy;
+const newDateReformat = monthNew + '/' + dayNew + '/' + yyyyNew;
 
 /**
  * Dev App Loaded and Running Test
@@ -656,14 +683,6 @@ describe("Admin Reservation Page", () => {
     /** Verify if arrived at confirmation section */
     cy.contains("Confirm Reservation").should("exist");
 
-    /** Getting today's date in mm/dd/yyyy */
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
-
-    let todayDate = mm + '/' + dd + '/' + yyyy;
-
     /** Verify if reservation dates shown (default) */
     cy.contains(todayDate + " - " + todayDate).should("exist");
     cy.get(".ReservationsPage-ReservationConfirmationDateContainer").should("exist");
@@ -702,23 +721,6 @@ describe("Admin Reservation Page", () => {
     /** Check if reservation list exists */
     cy.get(".ReservationList-Container.ReservationsPage-ReservationList");
 
-    /** Getting today's date in mm/dd/yyyy */
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
-
-    let todayDate = mm + '/' + dd + '/' + yyyy;
-
-    /** Getting date a week later in mm/dd/yyyy */
-    const weekLater = new Date();
-    weekLater.setDate(today.getDate() + 7);
-    const ddNew = String(weekLater.getDate()).padStart(2, '0');
-    const mmNew = String(weekLater.getMonth() + 1).padStart(2, '0');
-    const yyyyNew = weekLater.getFullYear();
-
-    let newDate = mmNew + '/' + ddNew + '/' + yyyyNew;
-
     /** Check if date input fields exist and input into them */
     cy.get("input[name='startDate'").clear().type(todayDate);
     cy.get("input[name='endDate'").clear().type(newDate);
@@ -733,58 +735,40 @@ describe("Admin Reservation Page", () => {
     /** Check if "Only Your Reservations" checkbox exist and click it */
     cy.get("button[class='IconButton-Container ReservationsPage-OnlyYourReservationsButton']").should("exist").click();
 
-    /** Check if reservation list updates to admin-only reservations */
+    /**TODO: Check if reservation list updates to admin-only reservations */
     // cy.get("div[class='ReservationList-Container ReservationsPage-ReservationList']").should('have.length', 2);
 
     /** Check if Requested filter button exists and click it */
     cy.contains("Requested").click();
 
-    /** Check if requested student/faculty reservation list exists */
+    /**TODO: Check if requested student/faculty reservation list exists */
     // cy.contains(".ReservationList-Container.ReservationsPage-ReservationList").should('have.length', 1);
 
-    /** Click on the 1 requested reservation */
+    /**TODO: Click on the 1 requested reservation */
 
-    /** Check if reservation details show */
+    /**TODO: Check if reservation details show */
 
-    /** Check if approve reservation button exists */
+    /**TODO: Check if approve reservation button exists */
 
-    /** Check if reject reservation button exists */
+    /**TODO: Check if reject reservation button exists */
 
-    /** Check if Approved filter button exists and click it */
+    /**TODO: Check if Approved filter button exists and click it */
 
-    /** Click on 1st approved reservation */
+    /**TODO: Click on 1st approved reservation */
 
-    /** Check if reservation details show */
+    /**TODO: Check if reservation details show */
 
-    /** Check if back button exists and click it */
+    /**TODO: Check if back button exists and click it */
 
-    /** Check if returned to make reservation page and enter reservations page again */
+    /**TODO: Check if returned to make reservation page and enter reservations page again */
     
-    /** Check if Make a Reservation button exists and click it */
+    /**TODO: Check if Make a Reservation button exists and click it */
 
-    /** Check if also returned to make reservation page */
+    /**TODO: Check if also returned to make reservation page */
   });
 
-  it("Successful Reservation", () => {
+  it("Successful Create Reservation", () => {
     /** Assuming 1st item in reservation inventory list has 3 or more items: */
-
-    /** Getting today's date in mm/dd/yyyy */
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
-
-    let todayDate = mm + '/' + dd + '/' + yyyy;
-
-    /** Getting date a week later in mm/dd/yyyy */
-    const weekLater = new Date();
-    weekLater.setDate(today.getDate() + 7);
-    const ddNew = String(weekLater.getDate()).padStart(2, '0');
-    const mmNew = String(weekLater.getMonth() + 1).padStart(2, '0');
-    const yyyyNew = weekLater.getFullYear();
-
-    let newDate = mmNew + '/' + ddNew + '/' + yyyyNew;
-
     /** Input the dates */
     cy.get("input[name='startDate'").eq(1).clear().type(todayDate);
     cy.get("input[name='endDate'").eq(1).clear().type(newDate);
@@ -812,27 +796,102 @@ describe("Admin Reservation Page", () => {
     cy.get(".NavigationBarButton-DashboardButton").as('dashbtn').should("exist");
     cy.get("@dashbtn").click();
 
-    /** Reformatting dates */
-    const day = String(today.getDate());
-    const month = String(today.getMonth() + 1);
-    const dayNew = String(weekLater.getDate());
-    const monthNew = String(weekLater.getMonth() + 1);
-
-    todayDate = month + '/' + day + '/' + yyyy;
-    newDate = monthNew + '/' + dayNew + '/' + yyyyNew;
-
     /** Confirm that the reservation has been successfully created and is displayed */
-    cy.contains(todayDate).should("exist");
-    cy.contains(newDate).should("exist");
+    cy.contains(todayDateReformat).should("exist");
+    cy.contains(newDateReformat).should("exist");
     cy.contains("Test, Admin").should("exist");
     cy.contains(":").should("exist");
     cy.contains("3 items").should("exist");
+  });
 
-    /** Now cancel it lol */
+  it("Successful Cancel Reservation", () => {
+    /** Go to the Dashboard */
+    cy.get(".NavigationBarButton-DashboardButton").as('dashbtn').should("exist");
+    cy.get("@dashbtn").click();
+
+    /** Click on the reservation */
     cy.get("button[class=' ReservationCard-Container ']").eq(0).should("exist").click();
+
+    /** Click the Cancel button */
     cy.contains("Cancel").should("be.visible").click();
+
+    /** Confirm that the reservation was cancelled :D */
     cy.contains("There are no upcoming reservations.").should("exist");
   });
+});
+
+describe("Admin Inventory Page", () => {
+    beforeEach(() => {
+        cy.visit(home);
+    
+        /** Verify if the input field for school email */
+        cy.get("input[name='emailAddress'").should("exist").type(admin_email);
+    
+        /** Verify if "Continue" button */
+        cy.contains("Continue").should("exist").click();
+    
+        /** Verify if the input field for password */
+        cy.get("input[name='password'").should("exist").type(password);
+    
+        /** Verify if "Sign In" button exists */
+        cy.contains("Sign In").should("exist").click();
+    
+        /** Verify if user is navigated to Dashboard */
+        cy.url().should("include", "/Dashboard");
+    
+        /** Verify Inventory Navigation */
+        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        cy.get("@invenbtn").click();
+        cy.url().should("include", "/Inventory");
+      });
+
+      it("Successful Add Type", () => {
+
+      });
+
+      it("Successful Edit Type", () => {
+
+      });
+
+      it("Successful Delete Type", () => {
+
+      });
+      
+      it("Successful Add Model", () => {
+
+      });
+
+      it("Successful Edit Model", () => {
+
+      });
+
+      it("Successful Delete Model", () => {
+
+      });
+
+      it("Successful Add RFID Antenna", () => {
+
+      });
+
+      it("Successful Add Location", () => {
+
+      });
+
+      it("Successful Add Equipment", () => {
+
+      });
+
+      it("Successful Edit Equipment", () => {
+
+      });
+
+      it("Successful Delete Equipment", () => {
+
+      });
+
+      it("Successful View Equipment Details", () => {
+
+      });
 });
 
 describe("Faculty Main Dashboard & Nav Bar", () => {
