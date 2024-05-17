@@ -263,7 +263,8 @@ describe("Sign Up Page", () => {
 
   it("Failed Sign Up with No First Name", () => {
     /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    cy.get("input[name='emailAddress'").as('emailinput').should("exist");
+    cy.get("@emailinput").type("temp@spu.edu");
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -693,11 +694,75 @@ describe("Admin Reservation Page", () => {
   });
 
   it("Hidden Reservation List Page UI", () => {
+    /** Assuming 1 requested reservation & 3 approved, 2 admin and 1 non-admin */
+
     /** Verify if your reservations button exists & click it */
-    cy.get(".ReservationsPage-YourReservationsButton").should("exist").click();
+    cy.get(".ReservationsPage-YourReservationsButton").eq(0).should("exist").click();
 
     /** Check if reservation list exists */
-    cy.get(".ReservationList-Container ReservationsPage-ReservationList");
+    cy.get(".ReservationList-Container.ReservationsPage-ReservationList");
+
+    /** Getting today's date in mm/dd/yyyy */
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+
+    let todayDate = mm + '/' + dd + '/' + yyyy;
+
+    /** Getting date a week later in mm/dd/yyyy */
+    const weekLater = new Date();
+    weekLater.setDate(today.getDate() + 7);
+    const ddNew = String(weekLater.getDate()).padStart(2, '0');
+    const mmNew = String(weekLater.getMonth() + 1).padStart(2, '0');
+    const yyyyNew = weekLater.getFullYear();
+
+    let newDate = mmNew + '/' + ddNew + '/' + yyyyNew;
+
+    /** Check if date input fields exist and input into them */
+    cy.get("input[name='startDate'").clear().type(todayDate);
+    cy.get("input[name='endDate'").clear().type(newDate);
+
+    /** Check if reservation list is now empty */
+    cy.contains("There are no reservations.").should("exist");
+
+    /** Now clear the date input fields */
+    cy.get("input[name='startDate'").clear();
+    cy.get("input[name='endDate'").clear();
+
+    /** Check if "Only Your Reservations" checkbox exist and click it */
+    cy.get("button[class='IconButton-Container ReservationsPage-OnlyYourReservationsButton']").should("exist").click();
+
+    /** Check if reservation list updates to admin-only reservations */
+    // cy.get("div[class='ReservationList-Container ReservationsPage-ReservationList']").should('have.length', 2);
+
+    /** Check if Requested filter button exists and click it */
+    cy.contains("Requested").click();
+
+    /** Check if requested student/faculty reservation list exists */
+    // cy.contains(".ReservationList-Container.ReservationsPage-ReservationList").should('have.length', 1);
+
+    /** Click on the 1 requested reservation */
+
+    /** Check if reservation details show */
+
+    /** Check if approve reservation button exists */
+
+    /** Check if reject reservation button exists */
+
+    /** Check if Approved filter button exists and click it */
+
+    /** Click on 1st approved reservation */
+
+    /** Check if reservation details show */
+
+    /** Check if back button exists and click it */
+
+    /** Check if returned to make reservation page and enter reservations page again */
+    
+    /** Check if Make a Reservation button exists and click it */
+
+    /** Check if also returned to make reservation page */
   });
 
   it("Successful Reservation", () => {
