@@ -1,0 +1,37 @@
+name: ETC Frontend E2E Tests
+
+on: push
+
+jobs:
+  run-etc-frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Clone tranleduyan/ETC-Backend
+        uses: GuillaumeFalourd/clone-github-repo-action@v2.3
+        with:
+          depth: 1
+          branch: 'main'
+          owner: 'tranleduyan'
+          repository: 'ETC-Backend'
+
+      - name: Access and run backend
+        run: |
+            cd ETC-Backend
+            ls -la
+          
+      - name: Clone tranleduyan/ETC-Frontend
+        uses: GuillaumeFalourd/clone-github-repo-action@v2.3
+        with:
+            depth: 1
+            branch: 'main'
+            owner: 'tranleduyan'
+            repository: 'ETC-Frontend'
+
+      - name: Access and run frontend
+        run: |
+            cd ETC-Frontend
+            ls -la
+	
