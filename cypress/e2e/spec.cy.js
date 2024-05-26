@@ -846,51 +846,264 @@ describe("Admin Inventory Page", () => {
       });
 
       it("Successful Add Type", () => {
+        /** Click on Type tab */
 
+        /** Click on "Add Type" button */
+
+        /** Type in type name "a bad game" */
+
+        /** Click on "Add Type" button again */
+
+        /** Return to Inventory page */
+        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        cy.get("@invenbtn").click();
+        cy.url().should("include", "/Inventory");
+
+        /** Click on Type tab */
+
+        /** Check if Type "a bad game" exists */
       });
 
       it("Successful Edit Type", () => {
+        /** Click on Type tab */
 
+        /** Click on checkbox next to "a bad game" */
+
+        /** Click on "Edit" button */
+
+        /** Change type name to "a blastingly fun game" */
+
+        /** Click on the "Save button" */
+
+        /** Click on the back button */
+
+        /** Check if Type "a blastingly fun game" exists */
       });
 
       it("Successful Delete Type", () => {
+        /** Click on Type tab */
 
+        /** Click on checkbox next to "a blastingly fun game" */
+
+        /** Click on the trash can button */
+
+        /** Click the "Yes" button on the pop-up */
+
+        /** Type "a blastingly fun game" should not exist */
       });
       
       it("Successful Add Model", () => {
+        /** Click on Model tab */
 
+        /** Click on "Add Model" button */
+
+        /** Type in dummy model name "NINTENDO-SWITCH" */
+
+        /** Select type (1st choice) */
+
+        /** Upload example image */
+
+        /** Click on "Add Model" button again */
+
+        /** Return to Inventory page */
+        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        cy.get("@invenbtn").click();
+        cy.url().should("include", "/Inventory");
+
+        /** Click on Model tab */
+
+        /** Check if Model "NINTENDO-SWITCH" exists */
       });
 
       it("Successful Edit Model", () => {
+        /** Click on Model tab */
 
+        /** Click on checkbox next to "NINTENDO-SWITCH" */
+
+        /** Click on "Edit" button */
+
+        /** Change model name to "NINTENDO-WII" */
+
+        /** Change uploaded image */
+
+        /** Click on the "Save button" */
+
+        /** Click on the back button */
+
+        /** Check if Model "NINTENDO-WII" exists */
       });
 
       it("Successful Delete Model", () => {
+        /** Click on Model tab */
 
+        /** Click on checkbox next to "NINTENDO-WII" */
+
+        /** Click on the trash can button */
+
+        /** Click the "Yes" button on the pop-up */
+
+        /** Model "NINTENDO-WII" should not exist */
       });
 
       it("Successful Add RFID Antenna", () => {
+        /** Click on RFID Antenna tab */
 
+        /** Click on "Add Antenna" button */
+
+        /** Type in dummy antenna ID "wii u" */
+
+        /** Select location (1st choice) */
+
+        /** Click on "Add Antenna" button again */
+
+        /** Return to Inventory page */
+        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        cy.get("@invenbtn").click();
+        cy.url().should("include", "/Inventory");
+
+        /** Click on RFID Antenna tab */
+
+        /** Check if Antenna "wii u" exists */
+      });
+
+      it("Successful Edit RFID Antenna", () => {
+        /** Click on RFID Antenna tab */
+
+        /** Click on checkbox next to "wii u" */
+
+        /** Click on "Edit" button */
+
+        /** Change model name to "3ds" */
+
+        /** Click on the "Save button" */
+
+        /** Click on the back button */
+
+        /** Check if Antenna "3ds" exists */
+      });
+
+      it("Successful Delete RFID Antenna", () => {
+        /** Click on RFID Antenna tab */
+
+        /** Click on checkbox next to "3ds" */
+
+        /** Click on the trash can button */
+
+        /** Click the "Yes" button on the pop-up */
+
+        /** Antenna "3ds" should not exist */
       });
 
       it("Successful Add Location", () => {
+        /** Click on Location tab */
 
+        /** Click on "Add Location" button */
+
+        /** Type in dummy Location name "Japan" */
+
+        /** Click on "Add Location" button again */
+
+        /** Return to Inventory page */
+        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        cy.get("@invenbtn").click();
+        cy.url().should("include", "/Inventory");
+
+        /** Click on Location tab */
+
+        /** Check if Location "Japan" exists */
+      });
+
+      it("Successful Edit Location", () => {
+        /** Click on Location tab */
+
+        /** Find location w/ name "Japan" & click on it */
+
+        /** Click on "Edit" button */
+
+        /** Change location name to "America" */
+
+        /** Click on the "Save button" */
+
+        /** Click on the back button */
+
+        /** Check if Location "America" exists */
+      });
+
+      it("Successful Delete Location", () => {
+        /** Click on Location tab */
+
+        /** Find location w/ name "America" & click on it */
+
+        /** Click on the trash can button */
+
+        /** Click the "Yes" button on the pop-up */
+
+        /** Location "America" should not exist */
       });
 
       it("Successful Add Equipment", () => {
+        /** Click on "Add Equippment" button */
+        cy.contains("Add Equipment").should("exist").click();
 
+        /** Type in dummy serial number AL-O51D00R2ALL3N8E */
+
+        /** Select a type (1st choice) */
+
+        /** Select a model (1st choice) */
+
+        /** Select maintenance status ("Ready") */
+
+        /** Type in RFID Tag ("TBD") */
+
+        /** Select home location (1st choice) */
+
+        /** Select condition ("New") */
+        
+        /** Type in purchase cost ($7.83) */
+
+        /** Type in purchase date (9/3/2021) */
+
+        /** Click on 2nd "Add Equippment" button */
+
+        /** Go back to Inventory page */
+
+        /** Find added equipment w/ serial ID AL-O51D00R2ALL3N8E & click on it */
+
+        /** Check that rest of info is correct */
       });
 
       it("Successful Edit Equipment", () => {
+        /** Find equipment w/ serial ID AL-O51D00R2ALL3N8E & click on it */
 
+        /** Click on "Edit" button */
+
+        /** Change model to 2nd one (assuming one's available) */
+
+        /** Change status to "Under Repair" */
+
+        /** Add home location */
+
+        /** Change condition to "Used" */
+
+        /** Change number of items to 1 */
+
+        /** Change purchase date to 12/17/2020 */
+
+        /** Click on save button */
+
+        /** Click on back button */
+
+        /** Check that most info's been changed */
       });
 
       it("Successful Delete Equipment", () => {
+        /** Find equipment w/ serial ID AL-O51D00R2ALL3N8E & click on it */
 
-      });
+        /** Click on trash can button */
 
-      it("Successful View Equipment Details", () => {
+        /** Click on "Yes" button of pop-up */
 
+        /** Equipment w/ serial ID AL-O51D00R2ALL3N8E should not exist */
       });
 });
 
