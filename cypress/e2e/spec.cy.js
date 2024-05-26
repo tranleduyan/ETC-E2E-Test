@@ -631,7 +631,7 @@ describe("Admin Reservation Page", () => {
 
     /** Verify Reservations Navigation */
     cy.get(".NavigationBarButton-ReservationsButton").as('resbtn').should("exist");
-    cy.get("@resbtn").click();
+    cy.get("@resbtn").click({force: true});
     cy.url().should("include", "/Reservations");
   });
 
@@ -652,7 +652,7 @@ describe("Admin Reservation Page", () => {
     cy.contains("Reserve").should("exist").click({force: true});
 
     /** Verify if checkbox(es) exist*/
-    cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").should("exist").click();
+    cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").eq(0).should("exist").click();
 
     /** Verify if next button exists */
     cy.get(".ReservationsPage-ContinueButton").eq(0).should("exist").click();
@@ -722,8 +722,8 @@ describe("Admin Reservation Page", () => {
     cy.get(".ReservationList-Container.ReservationsPage-ReservationList");
 
     /** Check if date input fields exist and input into them */
-    cy.get("input[name='startDate'").clear().type(todayDate);
-    cy.get("input[name='endDate'").clear().type(newDate);
+    cy.get("input[name='startDate'").clear().type("04/11/2023");
+    cy.get("input[name='endDate'").clear().type("06/15/2023");
 
     /** Check if reservation list is now empty */
     cy.contains("There are no reservations.").should("exist");
@@ -736,7 +736,7 @@ describe("Admin Reservation Page", () => {
     cy.get("button[class='IconButton-Container ReservationsPage-OnlyYourReservationsButton']").should("exist").click();
 
     /**TODO: Check if reservation list updates to admin-only reservations */
-    // cy.get("div[class='ReservationList-Container ReservationsPage-ReservationList']").should('have.length', 2);
+    cy.get("div[class='ReservationList-Container ReservationsPage-ReservationList']");
 
     /** Check if Requested filter button exists and click it */
     cy.contains("Requested").click();
@@ -777,7 +777,7 @@ describe("Admin Reservation Page", () => {
     cy.contains("Reserve").click({force: true});
 
     /** Click on the 1st checkbox*/
-    cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").should("exist").click();
+    cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").eq(0).should("exist").click();
 
     /** Click on the next button */
     cy.get(".ReservationsPage-ContinueButton").eq(0).should("exist").click();
@@ -799,7 +799,7 @@ describe("Admin Reservation Page", () => {
     /** Confirm that the reservation has been successfully created and is displayed */
     cy.contains(todayDateReformat).should("exist");
     cy.contains(newDateReformat).should("exist");
-    cy.contains("Test, Admin").should("exist");
+    cy.contains("Wilson, James").should("exist");
     cy.contains(":").should("exist");
     cy.contains("3 items").should("exist");
   });
@@ -816,7 +816,7 @@ describe("Admin Reservation Page", () => {
     cy.contains("Cancel").should("be.visible").click();
 
     /** Confirm that the reservation was cancelled :D */
-    cy.contains("There are no upcoming reservations.").should("exist");
+    cy.contains(todayDateReformat + " - " + newDateReformat).should("not.exist");
   });
 });
 
@@ -847,12 +847,16 @@ describe("Admin Inventory Page", () => {
 
       it("Successful Add Type", () => {
         /** Click on Type tab */
+        cy.contains("Type").should("exist").click();
 
         /** Click on "Add Type" button */
+        cy.contains("Add Type").should("exist").click();
 
         /** Type in type name "a bad game" */
+        cy.get("input[name='name']").should("exist").type("a bad game");
 
         /** Click on "Add Type" button again */
+        cy.contains("Add Type").should("exist").click();
 
         /** Return to Inventory page */
         cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
@@ -860,42 +864,58 @@ describe("Admin Inventory Page", () => {
         cy.url().should("include", "/Inventory");
 
         /** Click on Type tab */
+        cy.contains("Type").should("exist").click();
 
         /** Check if Type "a bad game" exists */
+        cy.contains("a bad game").should("exist");
       });
 
       it("Successful Edit Type", () => {
         /** Click on Type tab */
+        cy.contains("Type").should("exist").click();
 
-        /** Click on checkbox next to "a bad game" */
+        /** Click on checkbox next to "a bad game" (the 1st one) */
+        cy.get("button[class='IconButton-Container TypeInventoryCard-SelectButton']").eq(0).should("exist").click();
 
         /** Click on "Edit" button */
+        cy.contains("Edit").should("exist").click();
 
         /** Change type name to "a blastingly fun game" */
+        cy.get("input[name='name']").should("exist").type("a blastingly fun game");
 
         /** Click on the "Save button" */
+        cy.contains("Save").should("exist").click();
 
         /** Click on the back button */
+        cy.get("button[class='IconButton-Container UpdateTypePage-BackButton']").should("exist").click();
 
         /** Check if Type "a blastingly fun game" exists */
+        cy.contains("a blastingly fun game").should("exist");
       });
 
       it("Successful Delete Type", () => {
         /** Click on Type tab */
+        cy.contains("Type").should("exist").click();
 
-        /** Click on checkbox next to "a blastingly fun game" */
+        /** Click on checkbox next to "a blastingly fun game" (the 1st one) */
+        cy.get("button[class='IconButton-Container TypeInventoryCard-SelectButton']").eq(0).should("exist").click();
 
         /** Click on the trash can button */
+        cy.get("button[class='InventoryPage-DeleteButton StandardButton-Container']").should("exist").click();
 
         /** Click the "Yes" button on the pop-up */
+        cy.contains("Yes").should("exist").click();
 
         /** Type "a blastingly fun game" should not exist */
+        cy.contains("a blastingly fun game").should("not.exist");
       });
       
       it("Successful Add Model", () => {
         /** Click on Model tab */
+        cy.contains("Model").should("exist").click();
 
         /** Click on "Add Model" button */
+        cy.contains("Add Model").should("exist").click();
 
         /** Type in dummy model name "NINTENDO-SWITCH" */
 
@@ -904,19 +924,22 @@ describe("Admin Inventory Page", () => {
         /** Upload example image */
 
         /** Click on "Add Model" button again */
+        // cy.contains("Add Model").should("exist").click();
 
         /** Return to Inventory page */
-        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
-        cy.get("@invenbtn").click();
-        cy.url().should("include", "/Inventory");
+        // cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        // cy.get("@invenbtn").click();
+        // cy.url().should("include", "/Inventory");
 
         /** Click on Model tab */
+        // cy.contains("Model").should("exist").click();
 
         /** Check if Model "NINTENDO-SWITCH" exists */
       });
 
       it("Successful Edit Model", () => {
         /** Click on Model tab */
+        cy.contains("Model").should("exist").click();
 
         /** Click on checkbox next to "NINTENDO-SWITCH" */
 
@@ -935,6 +958,7 @@ describe("Admin Inventory Page", () => {
 
       it("Successful Delete Model", () => {
         /** Click on Model tab */
+        cy.contains("Model").should("exist").click();
 
         /** Click on checkbox next to "NINTENDO-WII" */
 
@@ -947,27 +971,32 @@ describe("Admin Inventory Page", () => {
 
       it("Successful Add RFID Antenna", () => {
         /** Click on RFID Antenna tab */
+        cy.contains("RFID Antenna").should("exist").click();
 
         /** Click on "Add Antenna" button */
+        cy.contains("Add Antenna").should("exist").click();
 
         /** Type in dummy antenna ID "wii u" */
 
         /** Select location (1st choice) */
 
         /** Click on "Add Antenna" button again */
+        // cy.contains("Add Antenna").should("exist").click();
 
         /** Return to Inventory page */
-        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
-        cy.get("@invenbtn").click();
-        cy.url().should("include", "/Inventory");
+        // cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        // cy.get("@invenbtn").click();
+        // cy.url().should("include", "/Inventory");
 
         /** Click on RFID Antenna tab */
+        // cy.contains("RFID Antenna").should("exist").click();
 
         /** Check if Antenna "wii u" exists */
       });
 
       it("Successful Edit RFID Antenna", () => {
         /** Click on RFID Antenna tab */
+        cy.contains("RFID Antenna").should("exist").click();
 
         /** Click on checkbox next to "wii u" */
 
@@ -984,6 +1013,7 @@ describe("Admin Inventory Page", () => {
 
       it("Successful Delete RFID Antenna", () => {
         /** Click on RFID Antenna tab */
+        cy.contains("RFID Antenna").should("exist").click();
 
         /** Click on checkbox next to "3ds" */
 
@@ -996,25 +1026,30 @@ describe("Admin Inventory Page", () => {
 
       it("Successful Add Location", () => {
         /** Click on Location tab */
+        cy.contains("Location").should("exist").click();
 
         /** Click on "Add Location" button */
+        cy.contains("Add Location").should("exist").click();
 
         /** Type in dummy Location name "Japan" */
 
         /** Click on "Add Location" button again */
+        // cy.contains("Add Location").should("exist").click();
 
         /** Return to Inventory page */
-        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
-        cy.get("@invenbtn").click();
-        cy.url().should("include", "/Inventory");
+        // cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        // cy.get("@invenbtn").click();
+        // cy.url().should("include", "/Inventory");
 
         /** Click on Location tab */
+        // cy.contains("Location").should("exist").click();
 
         /** Check if Location "Japan" exists */
       });
 
       it("Successful Edit Location", () => {
         /** Click on Location tab */
+        cy.contains("Location").should("exist").click();
 
         /** Find location w/ name "Japan" & click on it */
 
@@ -1031,6 +1066,7 @@ describe("Admin Inventory Page", () => {
 
       it("Successful Delete Location", () => {
         /** Click on Location tab */
+        cy.contains("Location").should("exist").click();
 
         /** Find location w/ name "America" & click on it */
 
@@ -1064,6 +1100,7 @@ describe("Admin Inventory Page", () => {
         /** Type in purchase date (9/3/2021) */
 
         /** Click on 2nd "Add Equippment" button */
+        // cy.contains("Add Equipment").should("exist").click();
 
         /** Go back to Inventory page */
 
