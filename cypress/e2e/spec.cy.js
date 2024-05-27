@@ -331,7 +331,7 @@ describe("Sign Up Page", () => {
 
   it("Failed Sign Up with Invalid School ID", () => {
     /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    cy.get("input[name='emailAddress']").should("exist").type("temp@spu.edu");
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -449,32 +449,32 @@ describe("Sign Up Page", () => {
 
   it("Failed Sign Up with Existing Account (email)", () => {
     /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").as('emailbox').should("exist");
+    cy.get("input[name='emailAddress']").as('emailbox').should("exist");
     cy.get("@emailbox").type(student_email);
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify and enter temp first name into first name input field */
-    cy.get("input[name='firstName'").should("exist").type("first");
+    cy.get("input[name='firstName']").should("exist").type("first");
 
     /** Verify and enter temp last name into last name input field */
-    cy.get("input[name='lastName'").should("exist").type("last");
+    cy.get("input[name='lastName']").should("exist").type("last");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify and enter temp school ID into school ID input field */
-    cy.get("input[name='schoolId'").should("exist").type("900736428");
+    cy.get("input[name='schoolId']").should("exist").type("900736428");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify and enter temp password into password input field */
-    cy.get("input[name='password'").should("exist").type("wakemeupwhenyougogo");
+    cy.get("input[name='password']").should("exist").type("wakemeupwhenyougogo");
 
     /** Verify and enter temp password into password confirm input field */
-    cy.get("input[name='confirmPassword'").should("exist").type("wakemeupwhenyougogo");
+    cy.get("input[name='confirmPassword']").should("exist").type("wakemeupwhenyougogo");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -488,16 +488,17 @@ describe("Sign Up Page", () => {
 
   it("Failed Sign Up with Existing Account (school ID)", () => {
     /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    cy.get("input[name='emailAddress']").as('emailbox').should("exist");
+    cy.get("@emailbox").type("temp@spu.edu");
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify and enter temp first name into first name input field */
-    cy.get("input[name='firstName'").should("exist").type("first");
+    cy.get("input[name='firstName']").should("exist").type("first");
 
     /** Verify and enter temp last name into last name input field */
-    cy.get("input[name='lastName'").should("exist").type("last");
+    cy.get("input[name='lastName']").should("exist").type("last");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -775,6 +776,7 @@ describe("Admin Reservation Page", () => {
 
     /** Click Reserve button */
     cy.contains("Reserve").click({force: true});
+    cy.wait(1000);
 
     /** Click on the 1st checkbox*/
     cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").eq(0).should("exist").click();
@@ -791,10 +793,11 @@ describe("Admin Reservation Page", () => {
 
     /** Click the confirm button */
     cy.get("button[class='ReservationsPage-ConfirmButton StandardButton-Container']").eq(0).should("exist").click();
+    cy.wait(8000);
 
     /** Go to the Dashboard */
     cy.get(".NavigationBarButton-DashboardButton").as('dashbtn').should("exist");
-    cy.get("@dashbtn").click();
+    cy.get("@dashbtn").click({force:true});
 
     /** Confirm that the reservation has been successfully created and is displayed */
     cy.contains(todayDateReformat).should("exist");
@@ -810,7 +813,7 @@ describe("Admin Reservation Page", () => {
     cy.get("@dashbtn").click();
 
     /** Click on the reservation */
-    cy.get("button[class=' ReservationCard-Container ']").eq(0).should("exist").click();
+    cy.contains(todayDateReformat + " - " + newDateReformat).eq(0).should("exist").click();
 
     /** Click the Cancel button */
     cy.contains("Cancel").should("be.visible").click();
@@ -857,6 +860,7 @@ describe("Admin Inventory Page", () => {
 
         /** Click on "Add Type" button again */
         cy.contains("Add Type").should("exist").click();
+        cy.wait(5000);
 
         /** Return to Inventory page */
         cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
@@ -874,14 +878,15 @@ describe("Admin Inventory Page", () => {
         /** Click on Type tab */
         cy.contains("Type").should("exist").click();
 
-        /** Click on checkbox next to "a bad game" (the 1st one) */
+        /** Click on checkbox next to "a bad game" (should be 1st one) */
         cy.get("button[class='IconButton-Container TypeInventoryCard-SelectButton']").eq(0).should("exist").click();
 
         /** Click on "Edit" button */
         cy.contains("Edit").should("exist").click();
+        cy.wait(2000);
 
         /** Change type name to "a blastingly fun game" */
-        cy.get("input[name='name']").should("exist").type("a blastingly fun game");
+        cy.get("input[name='name']").should("exist").clear().type("a blastingly fun game");
 
         /** Click on the "Save button" */
         cy.contains("Save").should("exist").click();
@@ -917,56 +922,80 @@ describe("Admin Inventory Page", () => {
         /** Click on "Add Model" button */
         cy.contains("Add Model").should("exist").click();
 
-        /** Type in dummy model name "NINTENDO-SWITCH" */
+        /** Type in dummy model name "AA-NINTENDO-SWITCH" */
+        cy.get("input[name='name']").should("exist").type("AA-NINTENDO-SWITCH");
 
-        /** Select type (1st choice) */
+        /** Select type "Ammeter" */
+        cy.contains("Select type").should("exist").click();
+        cy.contains("Ammeter").should("exist").click();
 
         /** Upload example image */
+        cy.get("input[type=file]").should("exist").selectFile("files/nintendo-switch.jpg", {force:true});
 
         /** Click on "Add Model" button again */
-        // cy.contains("Add Model").should("exist").click();
+        cy.contains("Add Model").should("exist").click();
+        cy.wait(5000); //wait for the app to finish processing
 
         /** Return to Inventory page */
-        // cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
-        // cy.get("@invenbtn").click();
-        // cy.url().should("include", "/Inventory");
+        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        cy.get("@invenbtn").click({force:true});
+        cy.url().should("include", "/Inventory");
 
         /** Click on Model tab */
-        // cy.contains("Model").should("exist").click();
+        cy.contains("Model").should("exist").click();
 
         /** Check if Model "NINTENDO-SWITCH" exists */
+        cy.contains("AA-NINTENDO-SWITCH").should("exist");
       });
 
       it("Successful Edit Model", () => {
         /** Click on Model tab */
         cy.contains("Model").should("exist").click();
 
-        /** Click on checkbox next to "NINTENDO-SWITCH" */
+        /** Click on checkbox next to "AA-NINTENDO-SWITCH" (should be 1st one) */
+        cy.get("button[class='IconButton-Container ModelInventoryCard-SelectButton']").eq(0).should("exist").click();
 
         /** Click on "Edit" button */
+        cy.contains("Edit").should("exist").click();
+        cy.wait(3500); //wait for the app to finish processing
 
-        /** Change model name to "NINTENDO-WII" */
+        /** Change model name to "WII-NINTENDO" */
+        cy.get("input[name='name']").should("exist").clear().type('WII-NINTENDO');
+        cy.wait(1000);
+
+        /** Change model type to Multimeter */
+        cy.contains("Ammeter").should("exist").click();
+        cy.contains("Multimeter").should("exist").click();
 
         /** Change uploaded image */
+        cy.get("input[type=file]").should("exist").selectFile("files/wii.png", {force:true});
 
         /** Click on the "Save button" */
+        cy.contains("Save").should("exist").click();
+        cy.wait(9000); //wait for the app to finish processing
 
         /** Click on the back button */
+        cy.get("button[class='IconButton-Container UpdateModelPage-BackButton']").should("exist").click();
 
-        /** Check if Model "NINTENDO-WII" exists */
+        /** Check if Model "WII-NINTENDO" exists */
+        cy.contains("WII-NINTENDO").should("exist");
       });
 
       it("Successful Delete Model", () => {
         /** Click on Model tab */
         cy.contains("Model").should("exist").click();
 
-        /** Click on checkbox next to "NINTENDO-WII" */
+        /** Click on checkbox next to "WII-NINTENDO" (should be last one) */
+        cy.get("button[class='IconButton-Container ModelInventoryCard-SelectButton']").last().should("exist").click();
 
         /** Click on the trash can button */
+        cy.get("button[class='InventoryPage-DeleteButton StandardButton-Container']").should("exist").click();
 
         /** Click the "Yes" button on the pop-up */
+        cy.contains("Yes").should("exist").click();
 
-        /** Model "NINTENDO-WII" should not exist */
+        /** Model "WII-NINTENDO" should not exist */
+        cy.contains("WII-NINTENDO").should("not.exist");
       });
 
       it("Successful Add RFID Antenna", () => {
@@ -977,51 +1006,71 @@ describe("Admin Inventory Page", () => {
         cy.contains("Add Antenna").should("exist").click();
 
         /** Type in dummy antenna ID "wii u" */
+        cy.get("input[name='id']").should("exist").type("wii u");
 
-        /** Select location (1st choice) */
+        /** Select location OMH 228 */
+        cy.contains("Select location").should("exist").click();
+        cy.contains("OMH 228").should("exist").click();
 
         /** Click on "Add Antenna" button again */
-        // cy.contains("Add Antenna").should("exist").click();
+        cy.contains("Add Antenna").should("exist").click();
+        cy.wait(2000);
 
         /** Return to Inventory page */
-        // cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
-        // cy.get("@invenbtn").click();
-        // cy.url().should("include", "/Inventory");
+        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        cy.get("@invenbtn").click();
+        cy.url().should("include", "/Inventory");
 
         /** Click on RFID Antenna tab */
-        // cy.contains("RFID Antenna").should("exist").click();
+        cy.contains("RFID Antenna").should("exist").click();
 
         /** Check if Antenna "wii u" exists */
+        cy.contains("wii u").should("exist");
       });
 
       it("Successful Edit RFID Antenna", () => {
         /** Click on RFID Antenna tab */
         cy.contains("RFID Antenna").should("exist").click();
 
-        /** Click on checkbox next to "wii u" */
+        /** Click on checkbox next to "wii u" (should be the last one) */
+        cy.get("button[class='IconButton-Container RFIDAntennaInventoryCard-SelectButton']").last().should("exist").click();
 
         /** Click on "Edit" button */
+        cy.contains("Edit").should("exist").click();
+        cy.wait(1000);
 
-        /** Change model name to "3ds" */
+        /** Change antenna name to "3ds" */
+        cy.get("input[name='id']").should("exist").clear().type("3ds");
+
+        /** Add location OMH 225 */
+        cy.contains("OMH 228").should("exist").click();
+        cy.contains("OMH 225").should("exist").click();
 
         /** Click on the "Save button" */
+        cy.contains("Save").should("exist").click();
 
         /** Click on the back button */
+        cy.get("button[class='IconButton-Container UpdateRFIDAntennaPage-BackButton']").should("exist").click();
 
         /** Check if Antenna "3ds" exists */
+        cy.contains("3ds").should("exist");
       });
 
       it("Successful Delete RFID Antenna", () => {
         /** Click on RFID Antenna tab */
         cy.contains("RFID Antenna").should("exist").click();
 
-        /** Click on checkbox next to "3ds" */
+        /** Click on checkbox next to "3ds" (should be the last one) */
+        cy.get("button[class='IconButton-Container RFIDAntennaInventoryCard-SelectButton']").last().should("exist").click();
 
         /** Click on the trash can button */
+        cy.get("button[class='InventoryPage-DeleteButton StandardButton-Container']").should("exist").click();
 
         /** Click the "Yes" button on the pop-up */
+        cy.contains("Yes").should("exist").click();
 
         /** Antenna "3ds" should not exist */
+        cy.contains("3ds").should("not.exist");
       });
 
       it("Successful Add Location", () => {
@@ -1032,19 +1081,22 @@ describe("Admin Inventory Page", () => {
         cy.contains("Add Location").should("exist").click();
 
         /** Type in dummy Location name "Japan" */
+        cy.get("input[name='name']").should("exist").type("Japan");
 
         /** Click on "Add Location" button again */
-        // cy.contains("Add Location").should("exist").click();
+        cy.contains("Add Location").should("exist").click();
+        cy.wait(1000);
 
         /** Return to Inventory page */
-        // cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
-        // cy.get("@invenbtn").click();
-        // cy.url().should("include", "/Inventory");
+        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        cy.get("@invenbtn").click();
+        cy.url().should("include", "/Inventory");
 
         /** Click on Location tab */
-        // cy.contains("Location").should("exist").click();
+        cy.contains("Location").should("exist").click();
 
         /** Check if Location "Japan" exists */
+        cy.contains("Japan").should("exist");
       });
 
       it("Successful Edit Location", () => {
@@ -1052,95 +1104,166 @@ describe("Admin Inventory Page", () => {
         cy.contains("Location").should("exist").click();
 
         /** Find location w/ name "Japan" & click on it */
+        cy.contains("Japan").should("exist").click();
 
         /** Click on "Edit" button */
+        cy.contains("Edit").should("exist").click();
+        cy.wait(1000);
 
         /** Change location name to "America" */
+        cy.get("input[name='name']").should("exist").clear().type("America");
 
         /** Click on the "Save button" */
+        cy.contains("Save").should("exist").click();
 
-        /** Click on the back button */
+        /** Click on the 1st back button */
+        cy.get("button[class='IconButton-Container UpdateLocationPage-BackButton']").should("exist").click();
+
+        /** Click on the 2nd back button */
+        cy.get("button[class='IconButton-Container LocationDetailsPage-BackButton']").should("exist").click();
 
         /** Check if Location "America" exists */
+        cy.contains("America").should("exist");
       });
 
       it("Successful Delete Location", () => {
         /** Click on Location tab */
         cy.contains("Location").should("exist").click();
 
-        /** Find location w/ name "America" & click on it */
+        /** Testing w/ checkbox 'cause cannot make the other work (hidden elements are frustrating D:< ) */
+        /** Click on checkbox next to "America" (should be the last one) */
+        cy.get("button[class='IconButton-Container LocationInventoryCard-SelectButton']").last().should("exist").click();
 
         /** Click on the trash can button */
+        cy.get("button[class='InventoryPage-DeleteButton StandardButton-Container']").should("exist").click();
 
         /** Click the "Yes" button on the pop-up */
+        cy.contains("Yes").should("exist").click();
 
         /** Location "America" should not exist */
+        cy.contains("America").should("not.exist");
       });
 
       it("Successful Add Equipment", () => {
         /** Click on "Add Equippment" button */
         cy.contains("Add Equipment").should("exist").click();
+        cy.wait(1000);
 
         /** Type in dummy serial number AL-O51D00R2ALL3N8E */
+        cy.get("input[name='serialNumber']").should("exist").type("AL-O51D00R2ALL3N8E");
 
-        /** Select a type (1st choice) */
+        /** Select the type Ammeter */
+        cy.contains("Select type").should("exist").click();
+        cy.contains("Ammeter").should("exist").click();
 
-        /** Select a model (1st choice) */
+        /** Select the model CHIHUA DH-670 */
+        cy.contains("Select model").should("exist").click();
+        cy.contains("CHIHUA DH-670").should("exist").click();
 
         /** Select maintenance status ("Ready") */
+        cy.contains("Select maintenance status").should("exist").click();
+        cy.contains("Ready").should("exist").click();
 
         /** Type in RFID Tag ("TBD") */
+        cy.get("input[name='rfidTag']").should("exist").type("TBD");
 
-        /** Select home location (1st choice) */
+        /** Select home location (OMH 225) */
+        cy.contains("Select home location").should("exist").click();
+        cy.contains("OMH 225").should("exist").click();
 
         /** Select condition ("New") */
+        cy.contains("Select condition").should("exist").click();
+        cy.contains("New").should("exist").click();
         
         /** Type in purchase cost ($7.83) */
+        cy.get("input[name='purchaseCost']").should("exist").type("7.83");
 
         /** Type in purchase date (9/3/2021) */
+        cy.get("input[name='purchaseDate']").should("exist").type("9/3/2021");
 
         /** Click on 2nd "Add Equippment" button */
-        // cy.contains("Add Equipment").should("exist").click();
+        cy.contains("Add Equipment").should("exist").click();
+        cy.wait(3000);
 
         /** Go back to Inventory page */
+        cy.get(".NavigationBarButton-InventoryButton").as('invenbtn').should("exist");
+        cy.get("@invenbtn").click();
+        cy.url().should("include", "/Inventory");
 
         /** Find added equipment w/ serial ID AL-O51D00R2ALL3N8E & click on it */
+        cy.contains("AL-O51D00R2ALL3N8E").should("exist").click();
 
         /** Check that rest of info is correct */
+        cy.contains("Ammeter").should("exist");
+        cy.contains("CHIHUA DH-670").should("exist");
+        cy.contains("Maintenance: Ready").should("exist");
+        cy.contains("Reservation: Available").should("exist");
+        cy.contains("Condition: New").should("exist");
+        cy.contains("Cost: $7.83").should("exist");
+        cy.contains("Purchase Date: 09/03/2021").should("exist");
+        cy.contains("RFID Tag: TBD").should("exist");
+        cy.contains("Home Room: OMH 225").should("exist");
       });
 
       it("Successful Edit Equipment", () => {
         /** Find equipment w/ serial ID AL-O51D00R2ALL3N8E & click on it */
+        cy.contains("AL-O51D00R2ALL3N8E").should("exist").click();
 
         /** Click on "Edit" button */
+        cy.contains("Edit").should("exist").click();
 
-        /** Change model to 2nd one (assuming one's available) */
+        /** Change model to NIN UWII-8359 */
+        cy.contains("CHIHUA DH-670").should("exist").click();
+        cy.contains("NIN UWII-8359").should("exist").click();
 
         /** Change status to "Under Repair" */
+        cy.contains("Ready").should("exist").click();
+        cy.contains("Under Repair").should("exist").click();
 
-        /** Add home location */
+        /** Add OMH 228 to home location */
+        cy.contains("OMH 225").should("exist").click();
+        cy.contains("OMH 228").should("exist").click();
 
         /** Change condition to "Used" */
-
-        /** Change number of items to 1 */
+        cy.contains("New").should("exist").click();
+        cy.contains("Used").should("exist").click();
 
         /** Change purchase date to 12/17/2020 */
+        cy.get("input[name='purchaseDate']").should("exist").clear().type("12/17/2020");
 
-        /** Click on save button */
+        /** Click on the "Save button" */
+        cy.contains("Save").should("exist").click();
+        cy.wait(3000);
 
-        /** Click on back button */
+        /** Click on the back button */
+        cy.get("button[class='IconButton-Container UpdateEquipmentPage-BackButton']").should("exist").click();
 
-        /** Check that most info's been changed */
+        /** Check that most info's been changed on details page */
+        cy.contains("Ammeter").should("exist");
+        cy.contains("CHIHUA DH-670").should("not.exist");
+        cy.contains("NIN UWII-8359").should("exist");
+        cy.contains("Maintenance: Under Repair").should("exist");
+        cy.contains("Reservation: Available").should("exist");
+        cy.contains("Condition: Used").should("exist");
+        cy.contains("Cost: $7.83").should("exist");
+        cy.contains("Purchase Date: 12/17/2020").should("exist");
+        cy.contains("RFID Tag: TBD").should("exist");
+        cy.contains("Home Room: OMH 225, OMH 228").should("exist");
       });
 
       it("Successful Delete Equipment", () => {
-        /** Find equipment w/ serial ID AL-O51D00R2ALL3N8E & click on it */
+        /** Testing w/ checkbox 'cause cannot make the other work (hidden elements are frustrating D:< ) */
+        /** Click on checkbox next to equipment w/ serial ID AL-O51D00R2ALL3N8E (should be the first one) */
+        cy.get("button[class='IconButton-Container EquipmentInventoryCard-SelectButton']").first().should("exist").click();
 
-        /** Click on trash can button */
+        /** Click on the trash can button */
+        cy.get("button[class='InventoryPage-DeleteButton StandardButton-Container']").should("exist").click();
 
-        /** Click on "Yes" button of pop-up */
+        /** Click the "Yes" button on the pop-up */
+        cy.contains("Yes").should("exist").click();
 
         /** Equipment w/ serial ID AL-O51D00R2ALL3N8E should not exist */
+        cy.contains("AL-O51D00R2ALL3N8E").should("not.exist");
       });
 });
 
