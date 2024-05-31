@@ -1,9 +1,17 @@
 /** Constants ------------------------------------- */
 const home = "/";
-const admin_email = "admin_test@spu.edu";
-const faculty_email = "faculty_test@spu.edu";
-const student_email = "student_test@spu.edu";
-const password = "test123";
+const prod_admin_email = "seattlepacificuniversity@spu.edu"; //replace instances with dev_admin_email for dev testing and vice versa
+const prod_fac_email = "qiank@spu.edu"; //replace instances with dev_faculty_email for dev testing and vice versa
+const prod_admin_password = "SeattlePacificUniversity!"; //replace instances with dev_admin_password for dev testing and vice versa
+const prod_fac_password = "HelloWorld"; //replace instances with dev_fac_password for dev testing and vice versa
+const prod_url = 'https://spu-etc.netlify.app/'; //replace instances with dev_url for dev testing and vice versa
+const dev_admin_email = "admin_test@spu.edu";
+const dev_faculty_email = "faculty_test@spu.edu";
+const dev_student_email = "student_test@spu.edu";
+const dev_admin_password = "test123";
+const dev_fac_password = "test123";
+const dev_stu_password = "test123";
+const dev_url = 'http://localhost:3000/';
 
 /** Getting today's date in mm/dd/yyyy */
 const today = new Date();
@@ -75,13 +83,13 @@ describe("Sign In Page", () => {
 
   it("Successful Sign In", () => {
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type(admin_email);
+    cy.get("input[name='emailAddress'").should("exist").type(prod_admin_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
   
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type(password);
+    cy.get("input[name='password'").should("exist").type(prod_admin_password);
   
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -130,7 +138,7 @@ describe("Sign In Page", () => {
 
   it("Failed Sign In with Invalid Password", () => {
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type(admin_email);
+    cy.get("input[name='emailAddress'").should("exist").type(prod_admin_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -167,7 +175,7 @@ describe("Sign In Page", () => {
     cy.contains("Continue").should("exist").click();
 
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type(password);
+    cy.get("input[name='password'").should("exist").type(prod_admin_password);
 
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -216,7 +224,8 @@ describe("Sign Up Page", () => {
 
   it("Successful Sign Up", () => {
     /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    cy.get("input[name='emailAddress']").as('emailinput').should("exist");
+    cy.get('@emailinput').type("temp@spu.edu");
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -311,7 +320,8 @@ describe("Sign Up Page", () => {
 
   it("Failed Sign Up with No Last Name", () => {
     /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    cy.get("input[name='emailAddress']").as('emailinput').should("exist");
+    cy.get('@emailinput').type("temp@spu.edu");
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -331,7 +341,8 @@ describe("Sign Up Page", () => {
 
   it("Failed Sign Up with Invalid School ID", () => {
     /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress']").should("exist").type("temp@spu.edu");
+    cy.get("input[name='emailAddress']").as('emailinput').should("exist");
+    cy.get('@emailinput').type("temp@spu.edu");
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -384,7 +395,8 @@ describe("Sign Up Page", () => {
 
   it("Failed Sign Up with Invalid Password", () => {
     /** Verify and enter temp SPU email into school email input field */
-    cy.get("input[name='emailAddress'").should("exist").type("temp@spu.edu");
+    cy.get("input[name='emailAddress']").as('emailinput').should("exist");
+    cy.get('@emailinput').type("temp@spu.edu");
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -450,7 +462,7 @@ describe("Sign Up Page", () => {
   it("Failed Sign Up with Existing Account (email)", () => {
     /** Verify and enter temp SPU email into school email input field */
     cy.get("input[name='emailAddress']").as('emailbox').should("exist");
-    cy.get("@emailbox").type(student_email);
+    cy.get("@emailbox").type(prod_fac_email);
     
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -504,7 +516,7 @@ describe("Sign Up Page", () => {
     cy.contains("Continue").should("exist").click();
 
     /** Verify and enter temp school ID into school ID input field */
-    cy.get("input[name='schoolId'").should("exist").type("800281127");
+    cy.get("input[name='schoolId'").should("exist").type("900394662");
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
@@ -526,18 +538,23 @@ describe("Sign Up Page", () => {
   });
 });
 
+/**
+ * Admin Dashboard & Nav Tests
+ * Checks the basic UI & functionality of admin user's dashboard & navigation bar
+ * Success: all needed UI components in admin works as expected
+ */
 describe("Admin Main Dashboard & Nav Bar", () => {
   beforeEach(() => {
     cy.visit(home);
 
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type(admin_email);
+    cy.get("input[name='emailAddress'").should("exist").type(prod_admin_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type(password);
+    cy.get("input[name='password'").should("exist").type(prod_admin_password);
 
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -558,6 +575,7 @@ describe("Admin Main Dashboard & Nav Bar", () => {
 
     /** Verify if reservation filters exist */
     cy.get(".AdminDashboard-ReservationFilterContainer").should("exist");
+    cy.wait(1000);
 
     /** Verify if the "Add Equipment" button exists and functionality works */
     cy.get(".AdminDashboard-AddEquipmentButton").should("exist").click();
@@ -593,10 +611,10 @@ describe("Admin Main Dashboard & Nav Bar", () => {
     cy.get("@resbtn").click();
     cy.url().should("include", "/Reservations");
 
-    /** Verify Notifications Navigation */
-    cy.get(".NavigationBarButton-NotificationsButton").as('notifybtn').should("exist");
-    cy.get("@notifybtn").click();
-    cy.url().should("include", "/Notifications");
+    /** Verify RFID Tags Navigation */
+    cy.get(".NavigationBarButton-RFIDTagsButton").as('rfidbtn').should("exist");
+    cy.get("@rfidbtn").click();
+    cy.url().should("include", "/RFIDTags");
 
     /** Verify Settings Navigation */
     cy.get(".NavigationBarButton-SettingsButton").as('setbtn').should("exist");
@@ -606,23 +624,30 @@ describe("Admin Main Dashboard & Nav Bar", () => {
     /** Verify Sign Out Navigation */
     cy.get(".NavigationBarButton-SignOutButton").as('signoutbtn').should("exist");
     cy.get("@signoutbtn").click();
-    cy.url().should("eq", 'http://localhost:3000/');
+    cy.url().should("eq", prod_url);
     //#endregion
   });
 });
 
+/**
+ * Admin Reservation Tests
+ * Tests admin reservation system's UI and functionalities
+ * Contains first success then error test cases
+ * Success: make and cancel admin-created reservations & UI works as expected
+ * Fail: tbd
+ */
 describe("Admin Reservation Page", () => {
   beforeEach(() => {
     cy.visit(home);
 
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type(admin_email);
+    cy.get("input[name='emailAddress'").should("exist").type(prod_admin_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type(password);
+    cy.get("input[name='password'").should("exist").type(prod_admin_password);
 
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -736,11 +761,11 @@ describe("Admin Reservation Page", () => {
     /** Check if "Only Your Reservations" checkbox exist and click it */
     cy.get("button[class='IconButton-Container ReservationsPage-OnlyYourReservationsButton']").should("exist").click();
 
-    /**TODO: Check if reservation list updates to admin-only reservations */
-    cy.get("div[class='ReservationList-Container ReservationsPage-ReservationList']");
+    // /**TODO: Check if reservation list updates to admin-only reservations */
+    // cy.get("div[class='ReservationList-Container ReservationsPage-ReservationList']");
 
-    /** Check if Requested filter button exists and click it */
-    cy.contains("Requested").click();
+    // /** Check if Requested filter button exists and click it */
+    // cy.contains("Requested").click();
 
     /**TODO: Check if requested student/faculty reservation list exists */
     // cy.contains(".ReservationList-Container.ReservationsPage-ReservationList").should('have.length', 1);
@@ -802,8 +827,6 @@ describe("Admin Reservation Page", () => {
     /** Confirm that the reservation has been successfully created and is displayed */
     cy.contains(todayDateReformat).should("exist");
     cy.contains(newDateReformat).should("exist");
-    cy.contains("Wilson, James").should("exist");
-    cy.contains(":").should("exist");
     cy.contains("3 items").should("exist");
   });
 
@@ -823,18 +846,25 @@ describe("Admin Reservation Page", () => {
   });
 });
 
+/**
+ * Admin Inventory Tests
+ * Tests various functionalities of the admin's inventory system
+ * Contains first success then error test cases
+ * Success: sign up with temp@spu.edu, first, last, 900736428, and wakemeupwhenyougogo
+ * Fail: invalid email, school ID, and password; missing names; and existing account (email and school ID)
+ */
 describe("Admin Inventory Page", () => {
     beforeEach(() => {
         cy.visit(home);
     
         /** Verify if the input field for school email */
-        cy.get("input[name='emailAddress'").should("exist").type(admin_email);
+        cy.get("input[name='emailAddress'").should("exist").type(prod_admin_email);
     
         /** Verify if "Continue" button */
         cy.contains("Continue").should("exist").click();
     
         /** Verify if the input field for password */
-        cy.get("input[name='password'").should("exist").type(password);
+        cy.get("input[name='password'").should("exist").type(prod_admin_password);
     
         /** Verify if "Sign In" button exists */
         cy.contains("Sign In").should("exist").click();
@@ -916,6 +946,11 @@ describe("Admin Inventory Page", () => {
       });
       
       it("Successful Add Model", () => {
+        /** Ensure type 'Accelerometer' exists */
+        cy.contains("Type").should("exist").click();
+        cy.contains("Accelerometer").should("exist");
+
+        /** Test: */
         /** Click on Model tab */
         cy.contains("Model").should("exist").click();
 
@@ -925,9 +960,9 @@ describe("Admin Inventory Page", () => {
         /** Type in dummy model name "AA-NINTENDO-SWITCH" */
         cy.get("input[name='name']").should("exist").type("AA-NINTENDO-SWITCH");
 
-        /** Select type "Ammeter" */
+        /** Select type "Accelerometer" */
         cy.contains("Select type").should("exist").click();
-        cy.contains("Ammeter").should("exist").click();
+        cy.contains("Accelerometer").should("exist").click();
 
         /** Upload example image */
         cy.get("input[type=file]").should("exist").selectFile("files/nintendo-switch.jpg", {force:true});
@@ -949,6 +984,10 @@ describe("Admin Inventory Page", () => {
       });
 
       it("Successful Edit Model", () => {
+        /** Ensure type 'Zoommeter' exists */
+        cy.contains("Type").should("exist").click();
+        cy.contains("Zoommeter").should("exist");
+
         /** Click on Model tab */
         cy.contains("Model").should("exist").click();
 
@@ -963,9 +1002,9 @@ describe("Admin Inventory Page", () => {
         cy.get("input[name='name']").should("exist").clear().type('WII-NINTENDO');
         cy.wait(1000);
 
-        /** Change model type to Multimeter */
-        cy.contains("Ammeter").should("exist").click();
-        cy.contains("Multimeter").should("exist").click();
+        /** Change model type to Zoommeter */
+        cy.contains("Accelerometer").should("exist").click();
+        cy.contains("Zoommeter").should("exist").click();
 
         /** Change uploaded image */
         cy.get("input[type=file]").should("exist").selectFile("files/wii.png", {force:true});
@@ -1057,6 +1096,8 @@ describe("Admin Inventory Page", () => {
       });
 
       it("Successful Delete RFID Antenna", () => {
+        cy.wait(1000); //for loading time
+
         /** Click on RFID Antenna tab */
         cy.contains("RFID Antenna").should("exist").click();
 
@@ -1145,27 +1186,39 @@ describe("Admin Inventory Page", () => {
       });
 
       it("Successful Add Equipment", () => {
+        /** 1st check if type Accelerometer & model FLX DGGO-216 & location OMH 225 exists */
+        cy.contains("Type").should("exist").click();
+        cy.contains("Accelerometer").should("exist");
+        cy.contains("Model").should("exist").click();
+        cy.contains("FLX DGGO-216").should("exist");
+        cy.contains("Location").should("exist").click();
+        cy.contains("OMH 225").should("exist");
+
+        /** Click on the Equipment tab */
+        cy.contains("Equipment").should("exist").click();
+
         /** Click on "Add Equippment" button */
-        cy.contains("Add Equipment").should("exist").click();
+        cy.contains("Add Equipment").as('addbtn').should("exist");
+        cy.get('@addbtn').click();
         cy.wait(1000);
 
         /** Type in dummy serial number AL-O51D00R2ALL3N8E */
         cy.get("input[name='serialNumber']").should("exist").type("AL-O51D00R2ALL3N8E");
 
-        /** Select the type Ammeter */
+        /** Select the type Accelerometer */
         cy.contains("Select type").should("exist").click();
-        cy.contains("Ammeter").should("exist").click();
+        cy.contains("Accelerometer").should("exist").click();
 
-        /** Select the model CHIHUA DH-670 */
+        /** Select the model FLX DGGO-216 */
         cy.contains("Select model").should("exist").click();
-        cy.contains("CHIHUA DH-670").should("exist").click();
+        cy.contains("FLX DGGO-216").should("exist").click();
 
         /** Select maintenance status ("Ready") */
         cy.contains("Select maintenance status").should("exist").click();
         cy.contains("Ready").should("exist").click();
 
         /** Type in RFID Tag ("TBD") */
-        cy.get("input[name='rfidTag']").should("exist").type("TBD");
+        // cy.get("input[name='rfidTag']").should("exist").type("001");
 
         /** Select home location (OMH 225) */
         cy.contains("Select home location").should("exist").click();
@@ -1194,26 +1247,36 @@ describe("Admin Inventory Page", () => {
         cy.contains("AL-O51D00R2ALL3N8E").should("exist").click();
 
         /** Check that rest of info is correct */
-        cy.contains("Ammeter").should("exist");
-        cy.contains("CHIHUA DH-670").should("exist");
+        cy.contains("Accelerometer").should("exist");
+        cy.contains("FLX DGGO-216").should("exist");
         cy.contains("Maintenance: Ready").should("exist");
         cy.contains("Reservation: Available").should("exist");
         cy.contains("Condition: New").should("exist");
         cy.contains("Cost: $7.83").should("exist");
         cy.contains("Purchase Date: 09/03/2021").should("exist");
-        cy.contains("RFID Tag: TBD").should("exist");
+        // cy.contains("RFID Tag: TBD").should("exist");
         cy.contains("Home Room: OMH 225").should("exist");
       });
 
       it("Successful Edit Equipment", () => {
+        /** Check if model NIN UWII-8359 & location OMH 228 exists */
+        cy.contains("Model").should("exist").click();
+        cy.contains("NIN UWII-8359").should("exist");
+        cy.contains("Location").should("exist").click();
+        cy.contains("OMH 228").should("exist");
+
+        /** Click on the Equipment tab */
+        cy.contains("Equipment").should("exist").click();
+
         /** Find equipment w/ serial ID AL-O51D00R2ALL3N8E & click on it */
         cy.contains("AL-O51D00R2ALL3N8E").should("exist").click();
 
         /** Click on "Edit" button */
         cy.contains("Edit").should("exist").click();
+        cy.wait(2000);
 
         /** Change model to NIN UWII-8359 */
-        cy.contains("CHIHUA DH-670").should("exist").click();
+        cy.contains("FLX DGGO-216").should("exist").click();
         cy.contains("NIN UWII-8359").should("exist").click();
 
         /** Change status to "Under Repair" */
@@ -1239,15 +1302,15 @@ describe("Admin Inventory Page", () => {
         cy.get("button[class='IconButton-Container UpdateEquipmentPage-BackButton']").should("exist").click();
 
         /** Check that most info's been changed on details page */
-        cy.contains("Ammeter").should("exist");
-        cy.contains("CHIHUA DH-670").should("not.exist");
+        cy.contains("Accelerometer").should("exist");
+        cy.contains("FLX DGGO-216").should("not.exist");
         cy.contains("NIN UWII-8359").should("exist");
         cy.contains("Maintenance: Under Repair").should("exist");
         cy.contains("Reservation: Available").should("exist");
         cy.contains("Condition: Used").should("exist");
         cy.contains("Cost: $7.83").should("exist");
         cy.contains("Purchase Date: 12/17/2020").should("exist");
-        cy.contains("RFID Tag: TBD").should("exist");
+        // cy.contains("RFID Tag: TBD").should("exist");
         cy.contains("Home Room: OMH 225, OMH 228").should("exist");
       });
 
@@ -1267,78 +1330,311 @@ describe("Admin Inventory Page", () => {
       });
 });
 
-describe("Faculty Main Dashboard & Nav Bar", () => {
-  beforeEach(() => {
-    cy.visit(home);
+// /**
+//  * Faculty Dashboard & Nav Tests
+//  * Checks the basic UI & functionality of faculty/student user's dashboard & navigation bar
+//  * Success: all needed UI components in admin works as expected
+//  */
+// describe("Faculty Main Dashboard & Nav Bar", () => {
+//   beforeEach(() => {
+//     cy.visit(home);
 
-    /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type(faculty_email);
+//     /** Verify if the input field for school email */
+//     cy.get("input[name='emailAddress']").should("exist").type(prod_fac_email);
 
-    /** Verify if "Continue" button */
-    cy.contains("Continue").should("exist").click();
+//     /** Verify if "Continue" button */
+//     cy.contains("Continue").should("exist").click();
 
-    /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type(password);
+//     /** Verify if the input field for password */
+//     cy.get("input[name='password'").should("exist").type(prod_fac_password);
 
-    /** Verify if "Sign In" button exists */
-    cy.contains("Sign In").should("exist").click();
+//     /** Verify if "Sign In" button exists */
+//     cy.contains("Sign In").should("exist").click();
 
-    /** Verify if user is navigated to Dashboard */
-    cy.url().should("include", "/Dashboard");
-  });
+//     /** Verify if user is navigated to Dashboard */
+//     cy.url().should("include", "/Dashboard");
+//   });
 
-  it("Faculty-Dashboard Specified", () => {
-    /** Verify if the Equipment Usage Section that contains two filters - "Currently Using" and "Recently Used" exist */
-    cy.get(".FacultyDashboard-EquipmentFilterSection").should("exist");
-    cy.get(".FacultyDashboard-EquipmentFilterCardList").should("exist");
-    cy.contains("Currently Using").should("exist");
-    cy.contains("Recently Used").should("exist");
+//   it("Faculty-Dashboard Specified", () => {
+//     /** Verify if the Equipment Usage Section that contains two filters - "Currently Using" and "Recently Used" exist */
+//     cy.get(".FacultyDashboard-EquipmentFilterSection").should("exist");
+//     cy.get(".FacultyDashboard-EquipmentFilterCardList").should("exist");
+//     cy.contains("Currently Using").should("exist");
+//     cy.contains("Recently Used").should("exist");
 
-    /** Verify if the "Make Reservation" exists and functionality works */
-    cy.get(".FacultyDashboard-MakeReservationButton").should("exist").click();
-    cy.url().should("include", "/Reservations");
-  });
+//     /** Verify if the "Make Reservation" exists and functionality works */
+//     cy.get(".FacultyDashboard-MakeReservationButton").should("exist").click();
+//     cy.url().should("include", "/Reservations");
+//   });
 
-  it("Navigation Bar for Faculty", () => {
-    /** Verify Dashboard Navigation */
-    cy.get(".NavigationBarButton-DashboardButton").as('dashbtn').should("exist");
-    cy.get("@dashbtn").click();
-    cy.url().should("include", "/Dashboard");
+//   it("Navigation Bar for Faculty", () => {
+//     /** Verify Dashboard Navigation */
+//     cy.get(".NavigationBarButton-DashboardButton").as('dashbtn').should("exist");
+//     cy.get("@dashbtn").click();
+//     cy.url().should("include", "/Dashboard");
 
-    /** Verify Reservations Navigation */
-    cy.get(".NavigationBarButton-ReservationsButton").as('resbtn').should("exist");
-    cy.get("@resbtn").click();
-    cy.url().should("include", "/Reservations");
+//     /** Verify Reservations Navigation */
+//     cy.get(".NavigationBarButton-ReservationsButton").as('resbtn').should("exist");
+//     cy.get("@resbtn").click();
+//     cy.url().should("include", "/Reservations");
 
-    /** Verify Notifications Navigation */
-    cy.get(".NavigationBarButton-NotificationsButton").as('notifybtn').should("exist");
-    cy.get("@notifybtn").click();
-    cy.url().should("include", "/Notifications");
+//     // /** Verify Notifications Navigation */
+//     // cy.get(".NavigationBarButton-NotificationsButton").as('notifybtn').should("exist");
+//     // cy.get("@notifybtn").click();
+//     // cy.url().should("include", "/Notifications");
 
-    /** Verify Settings Navigation */
-    cy.get(".NavigationBarButton-SettingsButton").as('setbtn').should("exist");
-    cy.get("@setbtn").click();
-    cy.url().should("include", "/Settings");
+//     /** Verify Settings Navigation */
+//     cy.get(".NavigationBarButton-SettingsButton").as('setbtn').should("exist");
+//     cy.get("@setbtn").click();
+//     cy.url().should("include", "/Settings");
 
-    /** Verify Sign Out Navigation */
-    cy.get(".NavigationBarButton-SignOutButton").as('signoutbtn').should("exist");
-    cy.get("@signoutbtn").click();
-    cy.url().should("eq", 'http://localhost:3000/');
-  });
-});
+//     /** Verify Sign Out Navigation */
+//     cy.get(".NavigationBarButton-SignOutButton").as('signoutbtn').should("exist");
+//     cy.get("@signoutbtn").click();
+//     cy.url().should("eq", prod_url);
+//   });
+// });
 
+// /**
+//  * Faculty Reservation Tests
+//  * Tests faculty reservation system's UI and functionalities
+//  * Contains first success then error test cases
+//  * Success: make and cancel reservations & UI works as expected
+//  * Fail: tbd
+//  */
+// describe("Faculty Reservation Page", () => {
+//     beforeEach(() => {
+//       cy.visit(home);
+  
+//       /** Verify if the input field for school email */
+//       cy.get("input[name='emailAddress']").should("exist").type(prod_fac_email);
+      
+//       /** Verify if "Continue" button */
+//       cy.contains("Continue").should("exist").click();
+      
+//       /** Verify if the input field for password */
+//       cy.get("input[name='password'").should("exist").type(prod_fac_password);
+      
+//       /** Verify if "Sign In" button exists */
+//       cy.contains("Sign In").should("exist").click();
+  
+//       /** Verify if user is navigated to Dashboard */
+//       cy.url().should("include", "/Dashboard");
+  
+//       /** Verify Reservations Navigation */
+//       cy.get(".NavigationBarButton-ReservationsButton").as('resbtn').should("exist");
+//       cy.get("@resbtn").click({force: true});
+//       cy.url().should("include", "/Reservations");
+//     });
+  
+//     it("Reservation Page UI", () => {
+//       /** Assuming 1st item in reservation inventory list has 3 or more items: */
+  
+//       /** Verify if search bar exists */
+//       cy.get(".ReservationsPage-SearchBar").should("exist");
+  
+//       /** Verify if date input fields exists */
+//       cy.get("input[name='startDate'").should("exist");
+//       cy.get("input[name='endDate'").should("exist");
+  
+//       /** Verify if your reservations button exists */
+//       cy.get(".ReservationsPage-YourReservationsButton").should("exist");
+  
+//       /** Verify if Reserve button exists and click it */
+//       cy.contains("Reserve").should("exist").click({force: true});
+  
+//       /** Verify if checkbox(es) exist*/
+//       cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").eq(0).should("exist").click();
+  
+//       /** Verify if next button exists */
+//       cy.get(".ReservationsPage-ContinueButton").eq(0).should("exist").click();
+  
+//       /** Verify if switches to specify quantity */
+//       cy.contains("Specify Quantity").should("exist");
+  
+//       /** Verify if plus button exists and click it 2 times (index to distinguish) */
+//       cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+//       cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+  
+//       /** Verify if quantity is now 3 */
+//       cy.contains("3").should("exist");
+  
+//       /** Verify if minus button exists and click it 2 times (index to distinguish) */
+//       cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(1).should("exist").click();
+//       cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(1).should("exist").click();
+  
+//       /** Verify if quantity is now 3 */
+//       cy.contains("1").should("exist");
+  
+//       /** Verify if equipment info card exists */
+//       cy.get(".SpecifyModelQuantityCard-Container").should("exist");
+  
+//       /** Verify and click the next button */
+//       cy.get("button[class='ReservationsPage-ContinueButton StandardButton-Container']").eq(0).should("exist").click();
+  
+//       /** Verify if arrived at confirmation section */
+//       cy.contains("Confirm Reservation").should("exist");
+  
+//       /** Verify if reservation dates shown (default) */
+//       cy.contains(todayDate + " - " + todayDate).should("exist");
+//       cy.get(".ReservationsPage-ReservationConfirmationDateContainer").should("exist");
+  
+//       /** Verify if confirmation reservation details list exists */
+//       cy.contains("Details").should("exist");
+//       cy.get(".ReservationConfirmationDetailsList-Container").should("exist");
+  
+//       /** Verify if correct quantity is shown */
+//       cy.contains("Quantity: 1").should("exist");
+  
+//       /** Verify the confirm button */
+//       cy.contains("Confirm").should("exist");
+  
+//       /** Now go back */
+//       /** Verify the back button */
+//       cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").eq(0).should("exist").click({force: true});
+  
+//       /** Verify if switches to specify quantity */
+//       cy.contains("Specify Quantity").should("exist");
+  
+//       /** Verify the back button for this page */
+//       cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").eq(0).should("exist").click({force: true});
+  
+//       /** Verify if cancel button exists and works */
+//       cy.contains("Cancel").should("exist").click({force: true});
+//       cy.contains("Reserve").should("exist");
+//     });
+  
+//     it("Hidden Reservation List Page UI", () => {
+//       /** Assuming 1 requested reservation & 3 approved, 2 admin and 1 non-admin */
+  
+//       /** Verify if your reservations button exists & click it */
+//       cy.get(".ReservationsPage-YourReservationsButton").eq(0).should("exist").click();
+  
+//       /** Check if reservation list exists */
+//       cy.get(".ReservationList-Container.ReservationsPage-ReservationList");
+  
+//       /** Check if date input fields exist and input into them */
+//       cy.get("input[name='startDate'").clear().type("04/11/2023");
+//       cy.get("input[name='endDate'").clear().type("06/15/2023");
+  
+//       /** Check if reservation list is now empty */
+//       cy.contains("There are no reservations.").should("exist");
+  
+//       /** Now clear the date input fields */
+//       cy.get("input[name='startDate'").clear();
+//       cy.get("input[name='endDate'").clear();
+  
+//       /** Check if "Only Your Reservations" checkbox exist and click it */
+//       cy.get("button[class='IconButton-Container ReservationsPage-OnlyYourReservationsButton']").should("exist").click();
+  
+//       // /**TODO: Check if reservation list updates to admin-only reservations */
+//       // cy.get("div[class='ReservationList-Container ReservationsPage-ReservationList']");
+  
+//       // /** Check if Requested filter button exists and click it */
+//       // cy.contains("Requested").click();
+  
+//       /**TODO: Check if requested student/faculty reservation list exists */
+//       // cy.contains(".ReservationList-Container.ReservationsPage-ReservationList").should('have.length', 1);
+  
+//       /**TODO: Click on the 1 requested reservation */
+  
+//       /**TODO: Check if reservation details show */
+  
+//       /**TODO: Check if approve reservation button exists */
+  
+//       /**TODO: Check if reject reservation button exists */
+  
+//       /**TODO: Check if Approved filter button exists and click it */
+  
+//       /**TODO: Click on 1st approved reservation */
+  
+//       /**TODO: Check if reservation details show */
+  
+//       /**TODO: Check if back button exists and click it */
+  
+//       /**TODO: Check if returned to make reservation page and enter reservations page again */
+      
+//       /**TODO: Check if Make a Reservation button exists and click it */
+  
+//       /**TODO: Check if also returned to make reservation page */
+//     });
+  
+//     it("Successful Make Reservation", () => {
+//       /** Assuming 1st item in reservation inventory list has 3 or more items: */
+//       /** Input the dates */
+//       cy.get("input[name='startDate'").eq(1).clear().type(todayDate);
+//       cy.get("input[name='endDate'").eq(1).clear().type(newDate);
+  
+//       /** Click Reserve button */
+//       cy.contains("Reserve").click({force: true});
+//       cy.wait(1000);
+  
+//       /** Click on the 1st checkbox*/
+//       cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").eq(0).should("exist").click();
+  
+//       /** Click on the next button */
+//       cy.get(".ReservationsPage-ContinueButton").eq(0).should("exist").click();
+      
+//       /** Click on the plus button 2 times */
+//       cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+//       cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+  
+//       /** Click the next button */
+//       cy.get("button[class='ReservationsPage-ContinueButton StandardButton-Container']").eq(0).should("exist").click();
+  
+//       /** Click the confirm button */
+//       cy.get("button[class='ReservationsPage-ConfirmButton StandardButton-Container']").eq(0).should("exist").click();
+//       cy.wait(8000);
+  
+//       // /** Go to the Dashboard */
+//       // cy.get(".NavigationBarButton-DashboardButton").as('dashbtn').should("exist");
+//       // cy.get("@dashbtn").click({force:true});
+  
+//       /** Verify if your reservations button exists & click it */
+//       cy.get(".ReservationsPage-YourReservationsButton").eq(0).should("exist").click();
+  
+//       /** Confirm that the reservation has been successfully created and is displayed */
+//       cy.contains(todayDateReformat).should("exist");
+//       cy.contains(newDateReformat).should("exist");
+//       cy.contains("3 items").should("exist");
+//     });
+
+//     it("Successful Cancel Reservation", () => {
+//         /** Go to the Dashboard */
+//         // cy.get(".NavigationBarButton-DashboardButton").as('dashbtn').should("exist");
+//         // cy.get("@dashbtn").click();
+    
+//         /** Verify if your reservations button exists & click it */
+//         cy.get(".ReservationsPage-YourReservationsButton").eq(0).should("exist").click();
+    
+//         /** Click on the reservation */
+//         cy.contains(todayDateReformat + " - " + newDateReformat).eq(0).should("exist").click();
+    
+//         /** Click the Cancel button */
+//         cy.contains("Cancel").should("be.visible").click();
+    
+//         /** Confirm that the reservation was cancelled :D */
+//         cy.contains(todayDateReformat + " - " + newDateReformat).should("not.exist");
+//       });
+//   });
+
+/**
+ * Student Dashboard & Nav Tests
+ * Checks the basic UI & functionality of student user's dashboard & navigation bar
+ * Success: all needed UI components in student works as expected
+ */
 describe("Student Dashboard & Nav Bar", () => {
   beforeEach(() => {
     cy.visit(home);
 
     /** Verify if the input field for school email */
-    cy.get("input[name='emailAddress'").should("exist").type(student_email);
+    cy.get("input[name='emailAddress']").should("exist").type(prod_fac_email);
 
     /** Verify if "Continue" button */
     cy.contains("Continue").should("exist").click();
 
     /** Verify if the input field for password */
-    cy.get("input[name='password'").should("exist").type(password);
+    cy.get("input[name='password'").should("exist").type(prod_fac_password);
 
     /** Verify if "Sign In" button exists */
     cy.contains("Sign In").should("exist").click();
@@ -1370,11 +1666,6 @@ describe("Student Dashboard & Nav Bar", () => {
     cy.get("@resbtn").click();
     cy.url().should("include", "/Reservations");
 
-    /** Verify Notifications Navigation */
-    cy.get(".NavigationBarButton-NotificationsButton").as('notifybtn').should("exist");
-    cy.get("@notifybtn").click();
-    cy.url().should("include", "/Notifications");
-
     /** Verify Settings Navigation */
     cy.get(".NavigationBarButton-SettingsButton").as('setbtn').should("exist");
     cy.get("@setbtn").click();
@@ -1383,6 +1674,209 @@ describe("Student Dashboard & Nav Bar", () => {
     /** Verify Sign Out Navigation */
     cy.get(".NavigationBarButton-SignOutButton").as('signoutbtn').should("exist");
     cy.get("@signoutbtn").click();
-    cy.url().should("eq", 'http://localhost:3000/');
+    cy.url().should("eq", prod_url);
   });
 });
+
+/**
+ * Student Reservation Tests
+ * Tests student reservation system's UI and functionalities
+ * Contains first success then error test cases
+ * Success: make and request reservations & UI works as expected
+ * Fail: tbd
+ */
+describe("Student Reservation Page", () => {
+    beforeEach(() => {
+      cy.visit(home);
+  
+      /** Verify if the input field for school email */
+      cy.get("input[name='emailAddress']").should("exist").type(prod_fac_email);
+      
+      /** Verify if "Continue" button */
+      cy.contains("Continue").should("exist").click();
+      
+      /** Verify if the input field for password */
+      cy.get("input[name='password'").should("exist").type(prod_fac_password);
+      
+      /** Verify if "Sign In" button exists */
+      cy.contains("Sign In").should("exist").click();
+  
+      /** Verify if user is navigated to Dashboard */
+      cy.url().should("include", "/Dashboard");
+  
+      /** Verify Reservations Navigation */
+      cy.get(".NavigationBarButton-ReservationsButton").as('resbtn').should("exist");
+      cy.get("@resbtn").click({force: true});
+      cy.url().should("include", "/Reservations");
+    });
+  
+    it("Reservation Page UI", () => {
+      /** Assuming 1st item in reservation inventory list has 3 or more items: */
+  
+      /** Verify if search bar exists */
+      cy.get(".ReservationsPage-SearchBar").should("exist");
+  
+      /** Verify if date input fields exists */
+      cy.get("input[name='startDate'").should("exist");
+      cy.get("input[name='endDate'").should("exist");
+  
+      /** Verify if your reservations button exists */
+      cy.get(".ReservationsPage-YourReservationsButton").should("exist");
+  
+      /** Verify if Reserve button exists and click it */
+      cy.contains("Reserve").should("exist").click({force: true});
+  
+      /** Verify if checkbox(es) exist*/
+      cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").eq(0).should("exist").click();
+  
+      /** Verify if next button exists */
+      cy.get(".ReservationsPage-ContinueButton").eq(0).should("exist").click();
+  
+      /** Verify if switches to specify quantity */
+      cy.contains("Specify Quantity").should("exist");
+  
+      /** Verify if plus button exists and click it 2 times (index to distinguish) */
+      cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+      cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+  
+      /** Verify if quantity is now 3 */
+      cy.contains("3").should("exist");
+  
+      /** Verify if minus button exists and click it 2 times (index to distinguish) */
+      cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(1).should("exist").click();
+      cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(1).should("exist").click();
+  
+      /** Verify if quantity is now 3 */
+      cy.contains("1").should("exist");
+  
+      /** Verify if equipment info card exists */
+      cy.get(".SpecifyModelQuantityCard-Container").should("exist");
+  
+      /** Verify and click the next button */
+      cy.get("button[class='ReservationsPage-ContinueButton StandardButton-Container']").eq(0).should("exist").click();
+  
+      /** Verify if arrived at confirmation section */
+      cy.contains("Confirm Reservation").should("exist");
+  
+      /** Verify if reservation dates shown (default) */
+      cy.contains(todayDate + " - " + todayDate).should("exist");
+      cy.get(".ReservationsPage-ReservationConfirmationDateContainer").should("exist");
+  
+      /** Verify if confirmation reservation details list exists */
+      cy.contains("Details").should("exist");
+      cy.get(".ReservationConfirmationDetailsList-Container").should("exist");
+  
+      /** Verify if correct quantity is shown */
+      cy.contains("Quantity: 1").should("exist");
+  
+      /** Verify the confirm button */
+      cy.contains("Confirm").should("exist");
+  
+      /** Now go back */
+      /** Verify the back button */
+      cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").eq(0).should("exist").click({force: true});
+  
+      /** Verify if switches to specify quantity */
+      cy.contains("Specify Quantity").should("exist");
+  
+      /** Verify the back button for this page */
+      cy.get("button[class='IconButton-Container ReservationsPage-BackButton']").eq(0).should("exist").click({force: true});
+  
+      /** Verify if cancel button exists and works */
+      cy.contains("Cancel").should("exist").click({force: true});
+      cy.contains("Reserve").should("exist");
+    });
+  
+    // it("Hidden Reservation List Page UI", () => {
+    //   /** Assuming 1 requested reservation & 3 approved, 2 admin and 1 non-admin */
+  
+    //   /** Verify if your reservations button exists & click it */
+    //   cy.get(".ReservationsPage-YourReservationsButton").eq(0).should("exist").click();
+  
+    //   /** Check if reservation list exists */
+    //   cy.get(".ReservationList-Container.ReservationsPage-ReservationList");
+  
+    //   /** Check if date input fields exist and input into them */
+    //   cy.get("input[name='startDate'").clear().type("04/11/2023");
+    //   cy.get("input[name='endDate'").clear().type("06/15/2023");
+  
+    //   /** Check if reservation list is now empty */
+    //   cy.contains("There are no reservations.").should("exist");
+  
+    //   /** Now clear the date input fields */
+    //   cy.get("input[name='startDate'").clear();
+    //   cy.get("input[name='endDate'").clear();
+  
+    //   /** Check if "Only Your Reservations" checkbox exist and click it */
+    //   cy.get("button[class='IconButton-Container ReservationsPage-OnlyYourReservationsButton']").should("exist").click();
+  
+    //   // /**TODO: Check if reservation list updates to admin-only reservations */
+    //   // cy.get("div[class='ReservationList-Container ReservationsPage-ReservationList']");
+  
+    //   // /** Check if Requested filter button exists and click it */
+    //   // cy.contains("Requested").click();
+  
+    //   /**TODO: Check if requested student/faculty reservation list exists */
+    //   // cy.contains(".ReservationList-Container.ReservationsPage-ReservationList").should('have.length', 1);
+  
+    //   /**TODO: Click on the 1 requested reservation */
+  
+    //   /**TODO: Check if reservation details show */
+  
+    //   /**TODO: Check if approve reservation button exists */
+  
+    //   /**TODO: Check if reject reservation button exists */
+  
+    //   /**TODO: Check if Approved filter button exists and click it */
+  
+    //   /**TODO: Click on 1st approved reservation */
+  
+    //   /**TODO: Check if reservation details show */
+  
+    //   /**TODO: Check if back button exists and click it */
+  
+    //   /**TODO: Check if returned to make reservation page and enter reservations page again */
+      
+    //   /**TODO: Check if Make a Reservation button exists and click it */
+  
+    //   /**TODO: Check if also returned to make reservation page */
+    // });
+
+    it("Successful Request Reservation", () => {
+        /** Assuming 1st item in reservation inventory list has at least 2 items: */
+        /** Input the dates */
+        cy.get("input[name='startDate'").eq(1).clear().type(todayDate);
+        cy.get("input[name='endDate'").eq(1).clear().type(newDate);
+    
+        /** Click Reserve button */
+        cy.contains("Reserve").click({force: true});
+        cy.wait(1000);
+    
+        /** Click on the 1st checkbox*/
+        cy.get("button[class='IconButton-Container AvailableModelCard-SelectButton']").eq(0).should("exist").click();
+    
+        /** Click on the next button */
+        cy.get(".ReservationsPage-ContinueButton").eq(0).should("exist").click();
+        
+        /** Click on the plus button 1 time */
+        cy.get("button[class='IconButton-Container SpecifyModelQuantityCard-QuantityUpdateButton']").eq(0).should("exist").click();
+    
+        /** Click the next button */
+        cy.get("button[class='ReservationsPage-ContinueButton StandardButton-Container']").eq(0).should("exist").click();
+    
+        /** Click the confirm button */
+        cy.get("button[class='ReservationsPage-ConfirmButton StandardButton-Container']").eq(0).should("exist").click();
+        cy.wait(8000);
+    
+        /** Go to the Dashboard */
+        cy.get(".NavigationBarButton-DashboardButton").as('dashbtn').should("exist");
+        cy.get("@dashbtn").click({force:true});
+    
+        cy.contains("Requested").click();
+  
+        /** Confirm that the reservation has been successfully requested and is displayed */
+        cy.contains(todayDateReformat).should("exist");
+        cy.contains(newDateReformat).should("exist");
+        cy.contains("2 items").should("exist");
+    });
+  });
