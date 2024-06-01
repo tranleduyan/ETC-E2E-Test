@@ -12,12 +12,9 @@ jobs:
       - name: Test frontend using Chrome
         uses: cypress-io/github-action@v6
         with:
-          build: npm run build
-          start: npm start
           browser: chrome
 
       - name: Test frontend using Edge
         uses: cypress-io/github-action@v6
         with:
-          start: npm start
           browser: edge
